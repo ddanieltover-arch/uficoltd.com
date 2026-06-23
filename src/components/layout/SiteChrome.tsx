@@ -37,7 +37,14 @@ export function Header() {
 
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
         <Link href="/" className="flex items-center gap-3">
-          <Image src={siteImages.logo} alt={site.name} width={200} height={48} className="h-10 w-auto" priority />
+          <Image
+            src={siteImages.logo}
+            alt={site.name}
+            width={148}
+            height={83}
+            className="h-11 w-auto"
+            priority
+          />
         </Link>
 
         <nav className="hidden items-center gap-1 xl:flex" aria-label="Main">

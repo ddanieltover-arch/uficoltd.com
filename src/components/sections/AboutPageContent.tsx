@@ -5,6 +5,7 @@ import { Award, Globe2, Leaf, Users } from "lucide-react";
 import { FadeIn, Stagger, StaggerItem } from "@/components/shared/motion";
 import { ButtonLink } from "@/components/ui/Button";
 import { site } from "@/lib/content";
+import { siteImages } from "@/lib/site-images";
 import type { PageContent } from "@/types";
 
 const GALLERY = [
@@ -45,7 +46,7 @@ const VALUES = [
   },
 ] as const;
 
-const HERO_IMAGE = "/images/products/Wholesale-Refined-White-Sugar.webp";
+const HERO_IMAGE = siteImages.hero;
 
 export function AboutPageContent({ page }: { page: PageContent }) {
   return (

@@ -1,12 +1,12 @@
 /** Local image paths — all assets served from /public (no remote WordPress URLs). */
 
 export const siteImages = {
-  logo: "/images/site/logo.svg",
-  hero: "/images/products/Wholesale-Refined-White-Sugar.webp",
+  logo: "/images/site/logo.png",
+  hero: "/images/site/hero.webp",
   intro: "/images/products/Thai-Organic-Sugar.webp",
   skills: "/images/products/Untitled-design-6-1.webp",
   contactBg: "/images/products/Fine-Grain-White-Sugar.webp",
-  contactHero: "/images/products/Wholesale-Refined-White-Sugar.webp",
+  contactHero: "/images/site/hero.webp",
   overview: "/images/products/Untitled-design-6-1.webp",
   categoryCommonSugars: "/images/products/Brown-Sugar-1.webp",
 } as const;
