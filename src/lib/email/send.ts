@@ -1,22 +1,7 @@
 import nodemailer from "nodemailer";
-import { Resend } from "resend";
-import {
-  emailConfig,
-  getFromAddress,
-  isEmailConfigured,
-  isResendConfigured,
-  isSmtpConfigured,
-} from "@/lib/email/config";
+import { emailConfig, getFromAddress, isSmtpConfigured } from "@/lib/email/config";
 
 let transporter: nodemailer.Transporter | null = null;
-let resendClient: Resend | null = null;
-
-function getResendClient(): Resend {
-  if (!resendClient) {
-    resendClient = new Resend(process.env.RESEND_API_KEY);
-  }
-  return resendClient;
-}
 
 function getSmtpTransporter(): nodemailer.Transporter {
   if (!isSmtpConfigured()) {
@@ -42,6 +27,7 @@ function getSmtpTransporter(): nodemailer.Transporter {
       socketTimeout: 20_000,
       tls: {
         minVersion: "TLSv1.2",
+        rejectUnauthorized: process.env.SMTP_TLS_REJECT_UNAUTHORIZED !== "false",
       },
     });
   }
@@ -60,42 +46,19 @@ type SendMailOptions = {
   replyTo?: string;
 };
 
-async function sendViaResend({ to, subject, html, replyTo }: SendMailOptions): Promise<void> {
-  const { error } = await getResendClient().emails.send({
-    from: getFromAddress(),
-    to: [to],
-    subject,
-    html,
-    replyTo: replyTo ?? emailConfig.salesEmail,
-  });
-
-  if (error) {
-    throw new Error(error.message);
-  }
-}
-
-async function sendViaSmtp({ to, subject, html, replyTo }: SendMailOptions): Promise<void> {
-  await getSmtpTransporter().sendMail({
-    from: getFromAddress(),
-    to,
-    subject,
-    html,
-    replyTo: replyTo ?? emailConfig.salesEmail,
-  });
-}
-
-export async function sendMail(options: SendMailOptions): Promise<void> {
-  if (!isEmailConfigured()) {
-    throw new Error("Email is not configured.");
-  }
-
-  if (isResendConfigured()) {
-    await sendViaResend(options);
-    return;
+export async function sendMail({ to, subject, html, replyTo }: SendMailOptions): Promise<void> {
+  if (!isSmtpConfigured()) {
+    throw new Error("SMTP is not configured.");
   }
 
   try {
-    await sendViaSmtp(options);
+    await getSmtpTransporter().sendMail({
+      from: getFromAddress(),
+      to,
+      subject,
+      html,
+      replyTo: replyTo ?? emailConfig.salesEmail,
+    });
   } catch (error) {
     resetSmtpTransporter();
     throw error;

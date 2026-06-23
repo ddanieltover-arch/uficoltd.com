@@ -23,27 +23,8 @@ export function isSmtpConfigured(): boolean {
   );
 }
 
-export function isResendConfigured(): boolean {
-  return Boolean(process.env.RESEND_API_KEY);
-}
-
-export function isVercelDeployment(): boolean {
-  return Boolean(process.env.VERCEL);
-}
-
-/** SMTP is blocked on Vercel — use Resend API there instead. */
-export function isEmailConfigured(): boolean {
-  if (isResendConfigured()) return true;
-  if (isVercelDeployment()) return false;
-  return isSmtpConfigured();
-}
-
-export function getEmailSetupError(): string {
-  if (isVercelDeployment() && !isResendConfigured()) {
-    return "Email delivery is not configured for Vercel. Add RESEND_API_KEY in your Vercel project environment variables (outbound SMTP is blocked on Vercel).";
-  }
-
-  if (!isEmailConfigured()) {
+export function getSmtpSetupError(): string {
+  if (!isSmtpConfigured()) {
     return "Email service is not configured. Please contact us directly at sales@uficoltd.com.";
   }
 

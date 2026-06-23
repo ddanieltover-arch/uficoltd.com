@@ -92,7 +92,7 @@ export function Footer() {
     <footer className="mt-16 border-t border-slate-200 bg-slate-950 text-slate-200">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-14 md:grid-cols-3">
         <div>
-          <h3 className="mb-3 text-lg font-bold text-white">{site.shortName}</h3>
+          <h3 className="mb-3 text-lg font-bold text-white">{site.name}</h3>
           <p className="text-sm leading-relaxed text-slate-400">{site.tagline}</p>
         </div>
         <div>
