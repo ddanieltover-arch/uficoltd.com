@@ -1,6 +1,6 @@
 "use server";
 
-import { emailConfig, getMailSetupError, isMailConfigured } from "@/lib/email/config";
+import { emailConfig, getEmailSetupError, isResendConfigured } from "@/lib/email/config";
 import { sendMail } from "@/lib/email/send";
 import { contactAdminEmail, contactUserEmail } from "@/lib/email/templates/contact";
 import { enquiryAdminEmail, enquiryUserEmail } from "@/lib/email/templates/enquiry";
@@ -27,11 +27,11 @@ async function sendDualEmails({
   userHtml: string;
   replyTo: string;
 }): Promise<{ ok: true } | { ok: false; error: string }> {
-  if (!isMailConfigured()) {
-    console.error("[email] Mail transport not configured");
+  if (!isResendConfigured()) {
+    console.error("[email] Resend not configured");
     return {
       ok: false,
-      error: getMailSetupError(),
+      error: getEmailSetupError(),
     };
   }
 
