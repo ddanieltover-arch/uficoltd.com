@@ -7,7 +7,7 @@ import { ButtonLink } from "@/components/ui/Button";
 
 export { PageBanner } from "@/components/layout/PageBanner";
 
-const LOGO = "https://uficoltd.com/wp-content/uploads/2024/07/cropped-lg1.png";
+import { siteImages } from "@/lib/site-images";
 
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
@@ -37,11 +37,7 @@ export function Header() {
 
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
         <Link href="/" className="flex items-center gap-3">
-          <Image src={LOGO} alt={site.name} width={170} height={44} className="h-10 w-auto" priority />
-          <div className="hidden sm:block">
-            <p className="text-sm font-semibold text-slate-900">{site.shortName}</p>
-            <p className="text-xs text-slate-500">Premium Thai Sugar Supplier</p>
-          </div>
+          <Image src={siteImages.logo} alt={site.name} width={200} height={48} className="h-10 w-auto" priority />
         </Link>
 
         <nav className="hidden items-center gap-1 xl:flex" aria-label="Main">

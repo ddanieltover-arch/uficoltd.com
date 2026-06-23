@@ -32,11 +32,6 @@ export interface PageContent {
   paragraphs: string[];
 }
 
-export interface NavItem {
-  label: string;
-  href: string;
-}
-
 export interface Testimonial {
   quote: string;
   name: string;

@@ -15,9 +15,7 @@ import { ContactForm } from "@/components/sections/Forms";
 import { FadeIn, Stagger, StaggerItem } from "@/components/shared/motion";
 import { ButtonLink } from "@/components/ui/Button";
 import { site } from "@/lib/content";
-
-const HERO_IMAGE =
-  "https://uficoltd.com/wp-content/uploads/2024/07/Sugar-Cane-Harvesting_Web.webp";
+import { siteImages } from "@/lib/site-images";
 
 const MAP_QUERY = encodeURIComponent(
   "365 Moo 1, Maliwan Road, Nongrua, Khonkaen 40210, Thailand",
@@ -106,7 +104,7 @@ export function ContactPageContent() {
               <div className="relative">
                 <div className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-[0_30px_80px_-40px_rgba(15,23,42,0.45)] ring-1 ring-slate-200/80">
                   <Image
-                    src={HERO_IMAGE}
+                    src={siteImages.contactHero}
                     alt="Sugar cane harvesting"
                     fill
                     className="object-cover"

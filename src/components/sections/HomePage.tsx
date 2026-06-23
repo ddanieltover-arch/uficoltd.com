@@ -14,25 +14,9 @@ import {
   StaggerItem,
 } from "@/components/shared/motion";
 
-const HERO_IMAGE =
-  "https://uficoltd.com/wp-content/uploads/2024/07/Sugar-Cane-Harvesting_Web.webp";
-const INTRO_IMAGE =
-  "https://uficoltd.com/wp-content/uploads/2024/07/sugarcane-being-harvested.webp";
-const SKILLS_IMAGE =
-  "https://uficoltd.com/wp-content/uploads/2024/07/Sugar-bum.webp";
+import { siteImages, categoryImages } from "@/lib/site-images";
 
 const featureIcons = { shield: Shield, layers: Layers, truck: Truck };
-
-const categoryImages: Record<string, string> = {
-  "common-sugars":
-    "https://uficoltd.com/wp-content/uploads/2024/07/sugarvsugars-brown-whitesugar-e1528986901183.webp",
-  icumsa:
-    "https://uficoltd.com/wp-content/uploads/2024/07/Refined-Icumsa-45-RBU-Standard.webp",
-  "thai-sugars":
-    "https://uficoltd.com/wp-content/uploads/2024/07/Thai-Brown-Sugar.webp",
-  "white-refined-sugars":
-    "https://uficoltd.com/wp-content/uploads/2024/07/Fine-Grain-White-Sugar.webp",
-};
 
 export function HomePage() {
   return (
@@ -40,7 +24,7 @@ export function HomePage() {
       <section className="relative overflow-hidden rounded-b-[2.5rem] bg-slate-900 text-white">
         <div className="absolute inset-0 overflow-hidden">
           <Image
-            src={HERO_IMAGE}
+            src={siteImages.hero}
             alt=""
             fill
             className="animate-ken-burns object-cover"
@@ -117,7 +101,7 @@ export function HomePage() {
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 lg:grid-cols-2">
           <FadeIn direction="left">
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-xl">
-              <Image src={INTRO_IMAGE} alt="Sugarcane harvest" fill className="object-cover transition duration-700 hover:scale-105" />
+              <Image src={siteImages.intro} alt="Sugarcane harvest" fill className="object-cover transition duration-700 hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/30 to-transparent" />
             </div>
           </FadeIn>
@@ -154,7 +138,7 @@ export function HomePage() {
           </FadeIn>
           <FadeIn direction="right" delay={0.15}>
             <div className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-xl">
-              <Image src={SKILLS_IMAGE} alt="Sugar production" fill className="object-cover transition duration-700 hover:scale-105" />
+              <Image src={siteImages.skills} alt="Sugar production" fill className="object-cover transition duration-700 hover:scale-105" />
             </div>
           </FadeIn>
         </div>
@@ -228,7 +212,7 @@ export function HomePage() {
 
       <section className="relative overflow-hidden py-24">
         <Image
-          src="https://uficoltd.com/wp-content/uploads/2024/07/1520142494635.webp"
+          src={siteImages.contactBg}
           alt=""
           fill
           className="animate-ken-burns object-cover"

@@ -1,14 +1,4 @@
-import type { NavItem, Testimonial } from "@/types";
-
-export const navItems: NavItem[] = [
-  { label: "Home", href: "/" },
-  { label: "Our Products", href: "/shop" },
-  { label: "About Us", href: "/about-us" },
-  { label: "Contact Us", href: "/contact-us" },
-  { label: "Manufacturing Process", href: "/manufacturing-process" },
-  { label: "Purchasing Procedures", href: "/purchasing-procedures" },
-  { label: "Quality Standard", href: "/quality-standard" },
-];
+import type { Testimonial } from "@/types";
 
 export const features = [
   {

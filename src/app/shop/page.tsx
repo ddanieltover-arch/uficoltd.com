@@ -3,14 +3,8 @@
 import { useMemo, useState } from "react";
 import { PageBanner } from "@/components/layout/SiteChrome";
 import { CategoryCard, ProductGrid } from "@/components/sections/ProductCard";
+import { categoryImages } from "@/lib/site-images";
 import { categories, products, searchProducts } from "@/lib/content";
-
-const categoryImages: Record<string, string> = {
-  "common-sugars": "https://uficoltd.com/wp-content/uploads/2024/07/sugarvsugars-brown-whitesugar-e1528986901183.webp",
-  icumsa: "https://uficoltd.com/wp-content/uploads/2024/07/Refined-Icumsa-45-RBU-Standard.webp",
-  "thai-sugars": "https://uficoltd.com/wp-content/uploads/2024/07/Thai-Brown-Sugar.webp",
-  "white-refined-sugars": "https://uficoltd.com/wp-content/uploads/2024/07/Fine-Grain-White-Sugar.webp",
-};
 
 export default function ShopPage() {
   const [query, setQuery] = useState("");

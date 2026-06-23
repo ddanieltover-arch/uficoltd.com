@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" role="img" aria-label="UFI Co., LTD">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0ba22e"/>
+      <stop offset="100%" stop-color="#088a26"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="4" width="40" height="40" rx="10" fill="url(#g)"/>
+  <text x="20" y="31" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif" font-size="16" font-weight="700">UFI</text>
+  <text x="50" y="22" fill="#0f172a" font-family="system-ui,sans-serif" font-size="15" font-weight="700">UFI Co., LTD</text>
+  <text x="50" y="38" fill="#64748b" font-family="system-ui,sans-serif" font-size="10" font-weight="500">Premium Thai Sugar Supplier</text>
+</svg>
