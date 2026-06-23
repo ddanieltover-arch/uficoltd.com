@@ -1,5 +1,12 @@
 import nodemailer from "nodemailer";
-import { emailConfig, getFromAddress, isSmtpConfigured } from "@/lib/email/config";
+import {
+  emailConfig,
+  getFromAddress,
+  isMailConfigured,
+  isSmtpConfigured,
+  usesMailRelay,
+} from "@/lib/email/config";
+import { sendMailViaRelay } from "@/lib/email/relay";
 
 let transporter: nodemailer.Transporter | null = null;
 
@@ -46,19 +53,28 @@ type SendMailOptions = {
   replyTo?: string;
 };
 
-export async function sendMail({ to, subject, html, replyTo }: SendMailOptions): Promise<void> {
-  if (!isSmtpConfigured()) {
-    throw new Error("SMTP is not configured.");
+async function sendViaSmtp({ to, subject, html, replyTo }: SendMailOptions): Promise<void> {
+  await getSmtpTransporter().sendMail({
+    from: getFromAddress(),
+    to,
+    subject,
+    html,
+    replyTo: replyTo ?? emailConfig.salesEmail,
+  });
+}
+
+export async function sendMail(options: SendMailOptions): Promise<void> {
+  if (!isMailConfigured()) {
+    throw new Error("Mail is not configured.");
+  }
+
+  if (usesMailRelay()) {
+    await sendMailViaRelay(options);
+    return;
   }
 
   try {
-    await getSmtpTransporter().sendMail({
-      from: getFromAddress(),
-      to,
-      subject,
-      html,
-      replyTo: replyTo ?? emailConfig.salesEmail,
-    });
+    await sendViaSmtp(options);
   } catch (error) {
     resetSmtpTransporter();
     throw error;
@@ -66,7 +82,7 @@ export async function sendMail({ to, subject, html, replyTo }: SendMailOptions):
 }
 
 export async function verifySmtpConnection(): Promise<boolean> {
-  if (!isSmtpConfigured()) return false;
+  if (!isSmtpConfigured() || usesMailRelay()) return false;
   try {
     await getSmtpTransporter().verify();
     return true;
