@@ -5,23 +5,8 @@ import { Award, Globe2, Leaf, Users } from "lucide-react";
 import { FadeIn, Stagger, StaggerItem } from "@/components/shared/motion";
 import { ButtonLink } from "@/components/ui/Button";
 import { site } from "@/lib/content";
-import { siteImages } from "@/lib/site-images";
+import { aboutGallery, marketingImages, siteImages } from "@/lib/site-images";
 import type { PageContent } from "@/types";
-
-const GALLERY = [
-  {
-    src: "/images/products/Fine-Grain-White-Sugar.webp",
-    alt: "Fine grain white sugar",
-  },
-  {
-    src: "/images/products/Refined-Icumsa-45-RBU-Standard.webp",
-    alt: "ICUMSA 45 refined sugar",
-  },
-  {
-    src: "/images/products/Thai-Brown-Sugar.webp",
-    alt: "Thai brown sugar",
-  },
-] as const;
 
 const VALUES = [
   {
@@ -45,8 +30,6 @@ const VALUES = [
     text: "Long-term partnerships built on transparency, reliability, and responsive service.",
   },
 ] as const;
-
-const HERO_IMAGE = siteImages.hero;
 
 export function AboutPageContent({ page }: { page: PageContent }) {
   return (
@@ -80,8 +63,8 @@ export function AboutPageContent({ page }: { page: PageContent }) {
               </div>
               <div className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-[0_30px_80px_-40px_rgba(15,23,42,0.45)] ring-1 ring-slate-200/80">
                 <Image
-                  src={HERO_IMAGE}
-                  alt="Sugar cane harvesting"
+                  src={siteImages.hero}
+                  alt="Sugar cane harvesting in Thailand"
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -101,13 +84,29 @@ export function AboutPageContent({ page }: { page: PageContent }) {
       {/* Gallery */}
       <section className="py-10">
         <div className="mx-auto max-w-7xl px-4">
-          <Stagger className="grid gap-4 md:grid-cols-3">
-            {GALLERY.map((item, i) => (
+          <FadeIn className="mb-8 text-center">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-brand-green">
+              Our operations
+            </p>
+            <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">
+              Scale, quality, and global reach
+            </h2>
+          </FadeIn>
+          <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {aboutGallery.map((item, i) => (
               <StaggerItem key={item.src}>
                 <div
-                  className={`relative overflow-hidden rounded-2xl ring-1 ring-slate-200/80 ${i === 1 ? "h-72 md:h-80" : "h-56 md:h-64"}`}
+                  className={`relative overflow-hidden rounded-2xl ring-1 ring-slate-200/80 ${
+                    i === aboutGallery.length - 1 ? "sm:col-span-2 lg:col-span-1" : ""
+                  } ${i === 4 ? "h-64 md:h-72" : "h-56 md:h-64"}`}
                 >
-                  <Image src={item.src} alt={item.alt} fill className="object-cover" sizes="33vw" />
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    fill
+                    className={i === 4 ? "object-contain bg-slate-50 p-4" : "object-cover"}
+                    sizes="33vw"
+                  />
                 </div>
               </StaggerItem>
             ))}
@@ -171,8 +170,8 @@ export function AboutPageContent({ page }: { page: PageContent }) {
       {/* Banner */}
       <section className="relative overflow-hidden py-24 text-center text-white">
         <Image
-          src={HERO_IMAGE}
-          alt=""
+          src={marketingImages.shippingContainer}
+          alt="Loading sugar bags for export shipment"
           fill
           className="object-cover"
           sizes="100vw"

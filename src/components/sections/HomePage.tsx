@@ -14,7 +14,7 @@ import {
   StaggerItem,
 } from "@/components/shared/motion";
 
-import { siteImages, categoryImages } from "@/lib/site-images";
+import { siteImages, categoryImages, operationsGallery } from "@/lib/site-images";
 
 const featureIcons = { shield: Shield, layers: Layers, truck: Truck };
 
@@ -25,7 +25,7 @@ export function HomePage() {
         <div className="absolute inset-0 overflow-hidden">
           <Image
             src={siteImages.hero}
-            alt=""
+            alt="Sugar cane harvesting in Thailand"
             fill
             className="animate-ken-burns object-cover"
             priority
@@ -101,7 +101,12 @@ export function HomePage() {
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 lg:grid-cols-2">
           <FadeIn direction="left">
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-xl">
-              <Image src={siteImages.intro} alt="Sugarcane harvest" fill className="object-cover transition duration-700 hover:scale-105" />
+              <Image
+                src={siteImages.intro}
+                alt="Premium refined white sugar in burlap sack"
+                fill
+                className="object-contain bg-slate-50 p-6 transition duration-700 hover:scale-105"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/30 to-transparent" />
             </div>
           </FadeIn>
@@ -138,9 +143,46 @@ export function HomePage() {
           </FadeIn>
           <FadeIn direction="right" delay={0.15}>
             <div className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-xl">
-              <Image src={siteImages.skills} alt="Sugar production" fill className="object-cover transition duration-700 hover:scale-105" />
+              <Image
+                src={siteImages.skills}
+                alt="Conveyor loading sugar bags into export container"
+                fill
+                className="object-cover transition duration-700 hover:scale-105"
+              />
             </div>
           </FadeIn>
+        </div>
+      </section>
+
+      <section className="py-20">
+        <div className="mx-auto max-w-7xl px-4">
+          <FadeIn className="mb-10 text-center">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-brand-green">
+              Operations
+            </p>
+            <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
+              From warehouse to worldwide export
+            </h2>
+          </FadeIn>
+          <Stagger className="grid gap-6 md:grid-cols-3">
+            {operationsGallery.map((item) => (
+              <StaggerItem key={item.src}>
+                <div className="group relative aspect-[4/3] overflow-hidden rounded-2xl shadow-xl ring-1 ring-slate-200/80">
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    fill
+                    className="object-cover transition duration-700 group-hover:scale-105"
+                    sizes="33vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/75 via-slate-900/20 to-transparent" />
+                  <p className="absolute bottom-0 left-0 p-5 text-lg font-semibold text-white">
+                    {item.label}
+                  </p>
+                </div>
+              </StaggerItem>
+            ))}
+          </Stagger>
         </div>
       </section>
 
@@ -213,7 +255,7 @@ export function HomePage() {
       <section className="relative overflow-hidden py-24">
         <Image
           src={siteImages.contactBg}
-          alt=""
+          alt="Industrial sugar processing and bagging facility"
           fill
           className="animate-ken-burns object-cover"
         />

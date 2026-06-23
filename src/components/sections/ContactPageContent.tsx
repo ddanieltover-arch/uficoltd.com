@@ -105,7 +105,7 @@ export function ContactPageContent() {
                 <div className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-[0_30px_80px_-40px_rgba(15,23,42,0.45)] ring-1 ring-slate-200/80">
                   <Image
                     src={siteImages.contactHero}
-                    alt="Sugar cane harvesting"
+                    alt="Warehouse forklift loading bulk sugar sacks"
                     fill
                     className="object-cover"
                     sizes="(max-width: 1024px) 100vw, 50vw"

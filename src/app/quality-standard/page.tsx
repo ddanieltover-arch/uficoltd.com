@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { InfoPageContent } from "@/components/sections/InfoPageContent";
 import { getPage } from "@/lib/content";
+import { productImages } from "@/lib/site-images";
 
 export const metadata: Metadata = {
   title: "Quality Standard",
@@ -13,8 +14,8 @@ export default function QualityPage() {
     <InfoPageContent
       page={page}
       eyebrow="Our commitment"
-      heroImage="/images/products/Special-Grade-White-Sugar.webp"
-      heroImageAlt="Special grade white sugar"
+      heroImage={productImages.quality}
+      heroImageAlt="Range of sugar varieties and quality grades"
     />
   );
 }

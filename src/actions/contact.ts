@@ -1,6 +1,6 @@
 "use server";
 
-import { emailConfig, isSmtpConfigured } from "@/lib/email/config";
+import { emailConfig, getEmailSetupError, isEmailConfigured } from "@/lib/email/config";
 import { sendMail } from "@/lib/email/send";
 import { contactAdminEmail, contactUserEmail } from "@/lib/email/templates/contact";
 import { enquiryAdminEmail, enquiryUserEmail } from "@/lib/email/templates/enquiry";
@@ -27,12 +27,11 @@ async function sendDualEmails({
   userHtml: string;
   replyTo: string;
 }): Promise<{ ok: true } | { ok: false; error: string }> {
-  if (!isSmtpConfigured()) {
-    console.error("[email] SMTP not configured");
+  if (!isEmailConfigured()) {
+    console.error("[email] Email transport not configured");
     return {
       ok: false,
-      error:
-        "Email service is not configured. Please contact us directly at sales@uficoltd.com.",
+      error: getEmailSetupError(),
     };
   }
 
@@ -47,7 +46,8 @@ async function sendDualEmails({
     console.error("[email] Failed to send admin notification:", err);
     return {
       ok: false,
-      error: "Failed to send your message. Please try again or email sales@uficoltd.com directly.",
+      error:
+        "Failed to send your message. Please try again or email sales@uficoltd.com directly.",
     };
   }
 

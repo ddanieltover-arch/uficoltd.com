@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { InfoPageContent } from "@/components/sections/InfoPageContent";
 import { getPage } from "@/lib/content";
+import { productImages } from "@/lib/site-images";
 
 export const metadata: Metadata = {
   title: "Manufacturing Process",
@@ -13,8 +14,8 @@ export default function ManufacturingPage() {
     <InfoPageContent
       page={page}
       eyebrow="How we produce"
-      heroImage="/images/products/Untitled-design-6-1.webp"
-      heroImageAlt="Sugar manufacturing"
+      heroImage={productImages.manufacturing}
+      heroImageAlt="Industrial sugar processing and bagging facility"
     />
   );
 }
