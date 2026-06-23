@@ -1,0 +1,76 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import { PageBanner } from "@/components/layout/SiteChrome";
+import { CategoryCard, ProductGrid } from "@/components/sections/ProductCard";
+import { categories, products, searchProducts } from "@/lib/content";
+
+const categoryImages: Record<string, string> = {
+  "common-sugars": "https://uficoltd.com/wp-content/uploads/2024/07/sugarvsugars-brown-whitesugar-e1528986901183.webp",
+  icumsa: "https://uficoltd.com/wp-content/uploads/2024/07/Refined-Icumsa-45-RBU-Standard.webp",
+  "thai-sugars": "https://uficoltd.com/wp-content/uploads/2024/07/Thai-Brown-Sugar.webp",
+  "white-refined-sugars": "https://uficoltd.com/wp-content/uploads/2024/07/Fine-Grain-White-Sugar.webp",
+};
+
+export default function ShopPage() {
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState<string>("all");
+
+  const filtered = useMemo(() => {
+    let list = searchProducts(query);
+    if (category !== "all") {
+      list = list.filter((p) => p.category === category);
+    }
+    return list;
+  }, [query, category]);
+
+  return (
+    <>
+      <PageBanner title="Our Products" />
+      <section className="py-14">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="mb-10 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:flex md:items-center md:justify-between">
+            <p className="text-sm font-medium text-slate-600">
+              Showing {filtered.length} of {products.length} products
+            </p>
+            <div className="mt-4 flex flex-wrap gap-3 md:mt-0">
+              <input
+                type="search"
+                placeholder="Search products..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="rounded-full border border-slate-300 px-4 py-2 text-sm outline-none focus:border-brand-green focus:ring-2 focus:ring-brand-green/20"
+              />
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="rounded-full border border-slate-300 px-4 py-2 text-sm outline-none focus:border-brand-green"
+              >
+                <option value="all">All categories</option>
+                {categories.map((c) => (
+                  <option key={c.slug} value={c.slug}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="mb-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {categories.map((cat) => (
+              <CategoryCard
+                key={cat.slug}
+                slug={cat.slug}
+                name={cat.name}
+                count={cat.count}
+                image={categoryImages[cat.slug]}
+              />
+            ))}
+          </div>
+
+          <ProductGrid products={filtered} />
+        </div>
+      </section>
+    </>
+  );
+}

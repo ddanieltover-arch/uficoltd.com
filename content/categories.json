@@ -1,0 +1,22 @@
+[
+  {
+    "slug": "common-sugars",
+    "name": "Common Sugars",
+    "count": 7
+  },
+  {
+    "slug": "icumsa",
+    "name": "ICUMSA",
+    "count": 8
+  },
+  {
+    "slug": "thai-sugars",
+    "name": "Thai Sugars",
+    "count": 3
+  },
+  {
+    "slug": "white-refined-sugars",
+    "name": "White Refined Sugars",
+    "count": 6
+  }
+]
