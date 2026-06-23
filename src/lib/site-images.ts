@@ -3,6 +3,8 @@
 export const siteImages = {
   logo: "/images/site/logo.png",
   hero: "/images/site/hero.webp",
+  ogImage: "/images/site/og-image.png",
+  favicon: "/images/site/favicon.ico",
   intro: "/images/products/Thai-Organic-Sugar.webp",
   skills: "/images/products/Untitled-design-6-1.webp",
   contactBg: "/images/products/Fine-Grain-White-Sugar.webp",
