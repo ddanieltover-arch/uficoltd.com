@@ -10,55 +10,84 @@ import {
   type EnquiryFormData,
 } from "@/lib/validations/contact";
 import { submitContactForm, submitEnquiryForm } from "@/actions/contact";
+import { SubmitButton } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
-export function ContactForm({ className }: { className?: string }) {
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+export function ContactForm({
+  className,
+  layout = "default",
+}: {
+  className?: string;
+  layout?: "default" | "wide";
+}) {
+  const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(
+    null,
+  );
   const {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<ContactFormData>({ resolver: zodResolver(contactSchema) });
 
   const onSubmit = async (data: ContactFormData) => {
-    setStatus("idle");
+    setFeedback(null);
     const result = await submitContactForm(data);
+
     if ("success" in result && result.success) {
-      setStatus("success");
+      setFeedback({ type: "success", message: result.message });
       reset();
-    } else {
-      setStatus("error");
+      return;
+    }
+
+    if ("error" in result) {
+      if (result.fields) {
+        for (const [field, messages] of Object.entries(result.fields)) {
+          if (messages?.[0]) {
+            setError(field as keyof ContactFormData, { message: messages[0] });
+          }
+        }
+      }
+
+      setFeedback({
+        type: "error",
+        message: result.error ?? "Something went wrong. Please try again.",
+      });
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={cn("space-y-4", className)}>
-      <Field label="Your name" error={errors.name?.message}>
-        <input {...register("name")} className={inputClass} />
-      </Field>
-      <Field label="Your email" error={errors.email?.message}>
-        <input type="email" {...register("email")} className={inputClass} />
-      </Field>
-      <Field label="Subject" error={errors.subject?.message}>
+    <form onSubmit={handleSubmit(onSubmit)} className={cn("space-y-4", className)} noValidate>
+      {layout === "wide" ? (
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label="Your name" error={errors.name?.message} required>
+            <input {...register("name")} className={inputClass} autoComplete="name" />
+          </Field>
+          <Field label="Your email" error={errors.email?.message} required>
+            <input type="email" {...register("email")} className={inputClass} autoComplete="email" />
+          </Field>
+        </div>
+      ) : (
+        <>
+          <Field label="Your name" error={errors.name?.message} required>
+            <input {...register("name")} className={inputClass} autoComplete="name" />
+          </Field>
+          <Field label="Your email" error={errors.email?.message} required>
+            <input type="email" {...register("email")} className={inputClass} autoComplete="email" />
+          </Field>
+        </>
+      )}
+      <Field label="Subject" error={errors.subject?.message} required>
         <input {...register("subject")} className={inputClass} />
       </Field>
-      <Field label="Your message" error={errors.message?.message}>
+      <Field label="Your message" error={errors.message?.message} required>
         <textarea rows={5} {...register("message")} className={inputClass} />
       </Field>
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="w-full rounded-lg bg-brand-green py-3 font-semibold text-white transition hover:bg-brand-green-dark disabled:opacity-60"
-      >
+      <SubmitButton disabled={isSubmitting} className={layout === "wide" ? "!w-auto" : undefined}>
         {isSubmitting ? "Sending..." : "Send message"}
-      </button>
-      {status === "success" && (
-        <p className="text-center text-sm text-brand-green">Message sent successfully.</p>
-      )}
-      {status === "error" && (
-        <p className="text-center text-sm text-red-600">Something went wrong. Please try again.</p>
-      )}
+      </SubmitButton>
+      {feedback && <FeedbackBanner type={feedback.type} message={feedback.message} />}
     </form>
   );
 }
@@ -72,11 +101,14 @@ export function EnquiryForm({
   productTitle?: string;
   className?: string;
 }) {
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(
+    null,
+  );
   const {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<EnquiryFormData>({
     resolver: zodResolver(enquirySchema),
@@ -87,68 +119,95 @@ export function EnquiryForm({
   });
 
   const onSubmit = async (data: EnquiryFormData) => {
-    setStatus("idle");
+    setFeedback(null);
     const result = await submitEnquiryForm(data);
+
     if ("success" in result && result.success) {
-      setStatus("success");
+      setFeedback({ type: "success", message: result.message });
       reset({ productSlug, subject: productTitle ? `Enquiry: ${productTitle}` : "" });
-    } else {
-      setStatus("error");
+      return;
+    }
+
+    if ("error" in result) {
+      if (result.fields) {
+        for (const [field, messages] of Object.entries(result.fields)) {
+          if (messages?.[0]) {
+            setError(field as keyof EnquiryFormData, { message: messages[0] });
+          }
+        }
+      }
+
+      setFeedback({
+        type: "error",
+        message: result.error ?? "Something went wrong. Please try again.",
+      });
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={cn("space-y-4", className)}>
+    <form onSubmit={handleSubmit(onSubmit)} className={cn("space-y-4", className)} noValidate>
       <input type="hidden" {...register("productSlug")} />
-      <Field label="Name *" error={errors.name?.message as string | undefined}>
-        <input {...register("name")} className={inputClass} />
+      <Field label="Name" error={errors.name?.message} required>
+        <input {...register("name")} className={inputClass} autoComplete="name" />
       </Field>
-      <Field label="Email *" error={errors.email?.message as string | undefined}>
-        <input type="email" {...register("email")} className={inputClass} />
+      <Field label="Email" error={errors.email?.message} required>
+        <input type="email" {...register("email")} className={inputClass} autoComplete="email" />
       </Field>
-      <Field label="Phone No *" error={errors.phone?.message as string | undefined}>
-        <input {...register("phone")} className={inputClass} />
+      <Field label="Phone No" error={errors.phone?.message} required>
+        <input type="tel" {...register("phone")} className={inputClass} autoComplete="tel" />
       </Field>
-      <Field label="Subject" error={errors.subject?.message as string | undefined}>
-        <input {...register("subject")} className={inputClass} />
+      <Field label="Subject" error={errors.subject?.message}>
+        <input {...register("subject")} className={inputClass} readOnly={!!productTitle} />
       </Field>
-      <Field label="Enquiry *" error={errors.enquiry?.message as string | undefined}>
-        <textarea rows={5} {...register("enquiry")} className={inputClass} />
+      <Field label="Enquiry" error={errors.enquiry?.message} required>
+        <textarea rows={5} {...register("enquiry")} className={inputClass} placeholder="Tell us about quantities, destination, and timeline..." />
       </Field>
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="rounded-lg bg-brand-green px-8 py-3 font-semibold text-white transition hover:bg-brand-green-dark disabled:opacity-60"
-      >
+      <SubmitButton disabled={isSubmitting} className="!w-auto">
         {isSubmitting ? "Sending..." : "Send enquiry"}
-      </button>
-      {status === "success" && (
-        <p className="text-sm text-brand-green">Enquiry sent. Our sales team will contact you shortly.</p>
-      )}
-      {status === "error" && (
-        <p className="text-sm text-red-600">Something went wrong. Please try again.</p>
-      )}
+      </SubmitButton>
+      {feedback && <FeedbackBanner type={feedback.type} message={feedback.message} />}
     </form>
+  );
+}
+
+function FeedbackBanner({ type, message }: { type: "success" | "error"; message: string }) {
+  const isSuccess = type === "success";
+  return (
+    <div
+      role="alert"
+      className={cn(
+        "rounded-xl border px-4 py-3 text-sm leading-relaxed",
+        isSuccess
+          ? "border-brand-green/30 bg-brand-green/5 text-brand-green-dark"
+          : "border-red-200 bg-red-50 text-red-700",
+      )}
+    >
+      {message}
+    </div>
   );
 }
 
 function Field({
   label,
   error,
+  required,
   children,
 }: {
   label: string;
   error?: string;
+  required?: boolean;
   children: React.ReactNode;
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-sm font-medium text-slate-700">{label}</span>
+      <span className="mb-1 block text-sm font-medium text-slate-700">
+        {label}
+        {required && <span className="text-brand-green"> *</span>}
+      </span>
       {children}
       {error && <span className="mt-1 block text-xs text-red-600">{error}</span>}
     </label>
   );
 }
 
-const inputClass =
-  "w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-brand-green focus:ring-4 focus:ring-brand-green/10";
+const inputClass = "input-field placeholder:text-slate-400";

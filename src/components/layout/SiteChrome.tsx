@@ -1,7 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import { NavLink } from "@/components/layout/NavLink";
 import { site } from "@/lib/content";
 import { cn } from "@/lib/utils";
+import { ButtonLink } from "@/components/ui/Button";
+
+export { PageBanner } from "@/components/layout/PageBanner";
 
 const LOGO = "https://uficoltd.com/wp-content/uploads/2024/07/cropped-lg1.png";
 
@@ -42,23 +46,16 @@ export function Header() {
 
         <nav className="hidden items-center gap-1 xl:flex" aria-label="Main">
           {NAV_ITEMS.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="rounded-full px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
-            >
+            <NavLink key={item.href} href={item.href}>
               {item.label}
-            </Link>
+            </NavLink>
           ))}
         </nav>
 
         <div className="flex items-center gap-3">
-          <Link
-            href="/contact-us"
-            className="hidden rounded-full bg-brand-green px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-green-dark lg:inline-flex"
-          >
+          <ButtonLink href="/contact-us" className="hidden !px-5 !py-2.5 lg:inline-flex">
             Get a Quote
-          </Link>
+          </ButtonLink>
           <MobileNav />
         </div>
       </div>
@@ -84,29 +81,6 @@ function MobileNav() {
         ))}
       </nav>
     </details>
-  );
-}
-
-export function PageBanner({ title, showShopButton = true }: { title: string; showShopButton?: boolean }) {
-  return (
-    <section className="bg-gradient-to-b from-slate-50 to-white py-14">
-      <div className="mx-auto max-w-7xl px-4">
-        <div className="rounded-3xl border border-slate-200 bg-white px-6 py-10 shadow-[0_20px_60px_-40px_rgba(2,6,23,0.6)] md:flex md:items-center md:justify-between md:px-10">
-          <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-brand-green">UFI Co., LTD</p>
-            <h1 className="text-3xl font-bold text-slate-900 md:text-4xl">{title}</h1>
-          </div>
-          {showShopButton && (
-            <Link
-              href="/shop"
-              className="mt-5 inline-flex rounded-full bg-brand-green px-7 py-3 text-sm font-semibold text-white transition hover:bg-brand-green-dark md:mt-0"
-            >
-              Browse Products
-            </Link>
-          )}
-        </div>
-      </div>
-    </section>
   );
 }
 

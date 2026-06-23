@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Footer, Header } from "@/components/layout/SiteChrome";
+import { PageTransition } from "@/components/shared/PageTransition";
 import { site } from "@/lib/content";
 import "./globals.css";
 
@@ -33,7 +34,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} min-h-screen antialiased`}>
         <Header />
-        <main>{children}</main>
+        <main>
+          <PageTransition>{children}</PageTransition>
+        </main>
         <Footer />
       </body>
     </html>

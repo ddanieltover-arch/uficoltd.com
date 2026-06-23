@@ -31,7 +31,8 @@ export default function ShopPage() {
         <div className="mx-auto max-w-7xl px-4">
           <div className="mb-10 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:flex md:items-center md:justify-between">
             <p className="text-sm font-medium text-slate-600">
-              Showing {filtered.length} of {products.length} products
+              Showing <span className="font-bold text-brand-green">{filtered.length}</span> of{" "}
+              {products.length} products
             </p>
             <div className="mt-4 flex flex-wrap gap-3 md:mt-0">
               <input
@@ -39,12 +40,12 @@ export default function ShopPage() {
                 placeholder="Search products..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="rounded-full border border-slate-300 px-4 py-2 text-sm outline-none focus:border-brand-green focus:ring-2 focus:ring-brand-green/20"
+                className="input-field !w-auto min-w-[200px] rounded-full"
               />
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="rounded-full border border-slate-300 px-4 py-2 text-sm outline-none focus:border-brand-green"
+                className="input-field !w-auto rounded-full"
               >
                 <option value="all">All categories</option>
                 {categories.map((c) => (
@@ -68,7 +69,7 @@ export default function ShopPage() {
             ))}
           </div>
 
-          <ProductGrid products={filtered} />
+          <ProductGrid products={filtered} animated />
         </div>
       </section>
     </>
