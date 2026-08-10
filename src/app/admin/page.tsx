@@ -4,7 +4,6 @@ import { auth } from "@/auth";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { countProducts } from "@/services/adminProductService";
 import { countNewInquiries, listRecentInquiries } from "@/services/inquiryService";
-import { countNewPartnerApplications } from "@/services/partnerService";
 import {
   countQuotesByStatuses,
   listRecentQuotes,
@@ -21,38 +20,23 @@ export default async function AdminDashboardPage() {
   const session = await auth();
   if (!session?.user) redirect("/admin/login");
 
-  const [
-    pendingQuotes,
-    newInquiries,
-    newDealers,
-    newDistributors,
-    productCount,
-    recentQuotes,
-    recentInquiries,
-  ] = await Promise.all([
-    countQuotesByStatuses(["NEW", "IN_PROGRESS", "AWAITING_INFO"]),
-    countNewInquiries(),
-    countNewPartnerApplications("dealer"),
-    countNewPartnerApplications("distributor"),
-    countProducts(),
-    listRecentQuotes(6),
-    listRecentInquiries(6),
-  ]);
+  const [pendingQuotes, newInquiries, productCount, recentQuotes, recentInquiries] =
+    await Promise.all([
+      countQuotesByStatuses(["NEW", "IN_PROGRESS", "AWAITING_INFO"]),
+      countNewInquiries(),
+      countProducts(),
+      listRecentQuotes(6),
+      listRecentInquiries(6),
+    ]);
 
   const widgets = [
     { label: "Pending quotations", value: pendingQuotes, href: "/admin/quotes" },
     { label: "New inquiries", value: newInquiries, href: "/admin/inquiries" },
-    { label: "New dealer apps", value: newDealers, href: "/admin/dealers" },
-    {
-      label: "New distributor apps",
-      value: newDistributors,
-      href: "/admin/distributors",
-    },
   ];
 
   return (
     <AdminShell title="Dashboard" current="/admin">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2">
         {widgets.map((w) => (
           <Link
             key={w.href}

@@ -33,8 +33,8 @@
 | Quotes | on |
 | Inquiries | on |
 | Products | on |
-| Dealers | on |
-| Distributors | on |
+| Dealers | off |
+| Distributors | off |
 | Site pages | on |
 | Certifications | later |
 

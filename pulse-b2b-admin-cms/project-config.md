@@ -51,8 +51,8 @@ Mark each: `on` | `off` | `later`
 |---|---|---|
 | Quotes / RFQ | on | Product enquiry form → QuoteRequest |
 | Inquiries / contact | on | Contact form → Inquiry |
-| Dealers | on | Admin queue; no public form in v1 |
-| Distributors | on | Admin queue; no public form in v1 |
+| Dealers | off | Removed from admin nav/dashboard |
+| Distributors | off | Removed from admin nav/dashboard |
 
 ### CMS
 
