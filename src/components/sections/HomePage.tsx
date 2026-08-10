@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Shield, Layers, Truck } from "lucide-react";
 import { features, skills, testimonials } from "@/config/site";
-import { categories, products, site } from "@/lib/content";
+import { getCategories, getProducts, site } from "@/lib/content";
 import { ContactForm } from "@/components/sections/Forms";
 import { CategoryCard, ProductGrid } from "@/components/sections/ProductCard";
 import { SectionHeading } from "@/components/layout/SiteChrome";
@@ -18,7 +18,9 @@ import { siteImages, categoryImages, operationsGallery } from "@/lib/site-images
 
 const featureIcons = { shield: Shield, layers: Layers, truck: Truck };
 
-export function HomePage() {
+export async function HomePage() {
+  const [categories, products] = await Promise.all([getCategories(), getProducts()]);
+
   return (
     <>
       <section className="relative overflow-hidden rounded-b-[2.5rem] bg-slate-900 text-white">

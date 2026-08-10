@@ -7,6 +7,20 @@
   --brand-green-dark: #088a26;
   --brand-green-light: #86efac;
   --brand-navy: #273647;
+
+  /* Admin / semantic brand tokens (Pulse B2B Admin CMS) */
+  --brand-color-primary: var(--brand-green);
+  --brand-color-primary-hover: var(--brand-green-dark);
+  --brand-color-secondary: var(--brand-navy);
+  --brand-color-bg: var(--background);
+  --brand-color-surface: #ffffff;
+  --brand-color-text: var(--foreground);
+  --brand-color-text-muted: #64748b;
+  --brand-color-border: #e2e8f0;
+  --brand-color-error: #b42318;
+  --brand-color-success: #1f7a4c;
+  --brand-radius-md: 0.5rem;
+  --brand-container: 75rem;
 }
 
 @theme inline {
@@ -16,7 +30,18 @@
   --color-brand-green-dark: var(--brand-green-dark);
   --color-brand-green-light: var(--brand-green-light);
   --color-brand-navy: var(--brand-navy);
+  --color-brand-primary: var(--brand-color-primary);
+  --color-brand-primary-hover: var(--brand-color-primary-hover);
+  --color-brand-secondary: var(--brand-color-secondary);
+  --color-brand-bg: var(--brand-color-bg);
+  --color-brand-surface: var(--brand-color-surface);
+  --color-brand-text: var(--brand-color-text);
+  --color-brand-muted: var(--brand-color-text-muted);
+  --color-brand-border: var(--brand-color-border);
+  --color-brand-error: var(--brand-color-error);
+  --color-brand-success: var(--brand-color-success);
   --font-sans: var(--font-inter);
+  --font-display: var(--font-inter);
 }
 
 * {

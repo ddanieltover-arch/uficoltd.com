@@ -5,6 +5,9 @@ import { sendMail } from "@/lib/email/send";
 import { contactAdminEmail, contactUserEmail } from "@/lib/email/templates/contact";
 import { enquiryAdminEmail, enquiryUserEmail } from "@/lib/email/templates/enquiry";
 import { contactSchema, enquirySchema } from "@/lib/validations/contact";
+import { createInquiry } from "@/services/inquiryService";
+import { getPublishedProductBySlug } from "@/services/productService";
+import { createQuoteRequest } from "@/services/quoteService";
 
 type ActionResult =
   | { success: true; message: string }
@@ -60,7 +63,6 @@ async function sendDualEmails({
     });
   } catch (err) {
     console.error("[email] Admin notified but user copy failed:", err);
-    // Admin received the message — still report success to the user
   }
 
   return { ok: true };
@@ -70,6 +72,21 @@ export async function submitContactForm(data: unknown): Promise<ActionResult> {
   const parsed = contactSchema.safeParse(data);
   if (!parsed.success) {
     return { error: "Invalid form data", fields: parsed.error.flatten().fieldErrors };
+  }
+
+  try {
+    await createInquiry({
+      contactName: parsed.data.name,
+      email: parsed.data.email,
+      message: `Subject: ${parsed.data.subject}\n\n${parsed.data.message}`,
+      source: "CONTACT",
+      sourcePath: "/contact-us",
+    });
+  } catch (err) {
+    console.error("[inquiry] Failed to persist contact:", err);
+    return {
+      error: "Failed to save your message. Please try again or email sales@uficoltd.com directly.",
+    };
   }
 
   const admin = contactAdminEmail(parsed.data);
@@ -99,6 +116,32 @@ export async function submitEnquiryForm(data: unknown): Promise<ActionResult> {
   const parsed = enquirySchema.safeParse(data);
   if (!parsed.success) {
     return { error: "Invalid form data", fields: parsed.error.flatten().fieldErrors };
+  }
+
+  let productId: string | null = null;
+  let productLabel = parsed.data.subject ?? null;
+  if (parsed.data.productSlug) {
+    const product = await getPublishedProductBySlug(parsed.data.productSlug);
+    if (product) {
+      productId = product.id;
+      productLabel = product.title;
+    }
+  }
+
+  try {
+    await createQuoteRequest({
+      contactName: parsed.data.name,
+      email: parsed.data.email,
+      phone: parsed.data.phone,
+      productId,
+      productLabel,
+      message: parsed.data.enquiry,
+    });
+  } catch (err) {
+    console.error("[quote] Failed to persist enquiry:", err);
+    return {
+      error: "Failed to save your enquiry. Please try again or email sales@uficoltd.com directly.",
+    };
   }
 
   const admin = enquiryAdminEmail(parsed.data);

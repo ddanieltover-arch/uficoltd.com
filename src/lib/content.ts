@@ -1,33 +1,45 @@
-import categoriesData from "../../content/categories.json";
-import pagesData from "../../content/pages.json";
-import productsData from "../../content/products.json";
 import siteData from "../../content/site.json";
 import type { Category, PageContent, Product, SiteConfig } from "@/types";
+import {
+  getPublishedProductBySlug,
+  getPublishedProductsByCategory,
+  listPublishedCategories,
+  listPublishedProducts,
+  searchPublishedProducts,
+} from "@/services/productService";
+import { getPublishedPageContent } from "@/services/sitePageService";
 
 export const site = siteData as SiteConfig;
-export const products = productsData as Product[];
-export const categories = categoriesData as Category[];
-export const pages = pagesData as Record<string, PageContent>;
 
-export function getProductBySlug(slug: string): Product | undefined {
-  return products.find((p) => p.slug === slug);
+/** @deprecated Prefer getProducts() — sync export kept only for static fallbacks during migration. */
+export const products: Product[] = [];
+/** @deprecated Prefer getCategories() */
+export const categories: Category[] = [];
+
+export async function getProducts(): Promise<Product[]> {
+  return listPublishedProducts();
 }
 
-export function getProductsByCategory(categorySlug: string): Product[] {
-  return products.filter((p) => p.category === categorySlug);
+export async function getCategories(): Promise<Category[]> {
+  return listPublishedCategories();
 }
 
-export function searchProducts(query: string): Product[] {
-  const q = query.toLowerCase().trim();
-  if (!q) return products;
-  return products.filter(
-    (p) =>
-      p.title.toLowerCase().includes(q) ||
-      p.excerpt.toLowerCase().includes(q) ||
-      p.categoryName.toLowerCase().includes(q),
-  );
+export async function getProductBySlug(slug: string): Promise<Product | undefined> {
+  return getPublishedProductBySlug(slug);
 }
 
-export function getPage(slug: keyof typeof pages): PageContent {
-  return pages[slug];
+export async function getProductsByCategory(categorySlug: string): Promise<Product[]> {
+  return getPublishedProductsByCategory(categorySlug);
+}
+
+export async function searchProducts(query: string): Promise<Product[]> {
+  return searchPublishedProducts(query);
+}
+
+export async function getPage(slug: string): Promise<PageContent> {
+  const page = await getPublishedPageContent(slug);
+  if (!page) {
+    return { title: slug, slug, paragraphs: [] };
+  }
+  return page;
 }
