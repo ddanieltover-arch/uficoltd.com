@@ -52,3 +52,4 @@ Setup: copy `.env.example` → `.env`, then `pnpm db:setup` (or `npm run db:setu
 ## Active work
 
 - Pulse B2B Admin CMS v1 scaffolded per `pulse-b2b-admin-cms`
+- Public catalogue falls back to `content/*.json` when `DATABASE_URL` is unset (Vercel build-safe). Admin CMS still needs a durable hosted DB in production (not SQLite on serverless).

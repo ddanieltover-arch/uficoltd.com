@@ -5,8 +5,8 @@ import { sendMail } from "@/lib/email/send";
 import { contactAdminEmail, contactUserEmail } from "@/lib/email/templates/contact";
 import { enquiryAdminEmail, enquiryUserEmail } from "@/lib/email/templates/enquiry";
 import { contactSchema, enquirySchema } from "@/lib/validations/contact";
+import { getProductBySlug } from "@/lib/content";
 import { createInquiry } from "@/services/inquiryService";
-import { getPublishedProductBySlug } from "@/services/productService";
 import { createQuoteRequest } from "@/services/quoteService";
 
 type ActionResult =
@@ -83,10 +83,8 @@ export async function submitContactForm(data: unknown): Promise<ActionResult> {
       sourcePath: "/contact-us",
     });
   } catch (err) {
+    // Still deliver email when DATABASE_URL is missing (e.g. Vercel without DB yet).
     console.error("[inquiry] Failed to persist contact:", err);
-    return {
-      error: "Failed to save your message. Please try again or email sales@uficoltd.com directly.",
-    };
   }
 
   const admin = contactAdminEmail(parsed.data);
@@ -121,9 +119,10 @@ export async function submitEnquiryForm(data: unknown): Promise<ActionResult> {
   let productId: string | null = null;
   let productLabel = parsed.data.subject ?? null;
   if (parsed.data.productSlug) {
-    const product = await getPublishedProductBySlug(parsed.data.productSlug);
+    const product = await getProductBySlug(parsed.data.productSlug);
     if (product) {
-      productId = product.id;
+      // JSON catalogue ids are numeric strings; Prisma CUIDs are not.
+      productId = /^\d+$/.test(product.id) ? null : product.id;
       productLabel = product.title;
     }
   }
@@ -139,9 +138,6 @@ export async function submitEnquiryForm(data: unknown): Promise<ActionResult> {
     });
   } catch (err) {
     console.error("[quote] Failed to persist enquiry:", err);
-    return {
-      error: "Failed to save your enquiry. Please try again or email sales@uficoltd.com directly.",
-    };
   }
 
   const admin = enquiryAdminEmail(parsed.data);
