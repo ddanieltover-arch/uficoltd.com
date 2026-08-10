@@ -13,8 +13,8 @@
 
 - Next.js 16 App Router (`src/app`)
 - React 19, TypeScript, Tailwind v4
-- Prisma (SQLite local; Postgres-ready via `DATABASE_URL`)
-- Auth.js (credentials) for `/admin`
+- Prisma + **Postgres** (`DATABASE_URL`) — required on Vercel (no SQLite)
+- Auth.js (credentials) for `/admin` — needs `AUTH_SECRET` + `AUTH_URL` on Vercel
 - Resend for public contact / enquiry email
 - Brand token prefix: `brand` (green primary `#0ba22e`, navy secondary `#273647`)
 
