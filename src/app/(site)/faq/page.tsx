@@ -6,9 +6,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { RelatedLinks } from "@/components/seo/RelatedLinks";
 import { getFaqs } from "@/lib/content";
 import { faqPageSchema } from "@/lib/schema";
-import { buildPageMetadata, PAGE_REVALIDATE_SECONDS } from "@/lib/seo";
-
-export const revalidate = PAGE_REVALIDATE_SECONDS;
+import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
   title: "Sugar Export FAQ",

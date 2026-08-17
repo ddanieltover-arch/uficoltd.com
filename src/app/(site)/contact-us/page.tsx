@@ -2,9 +2,7 @@ import { ContactPageContent } from "@/components/sections/ContactPageContent";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { site } from "@/lib/content";
 import { contactPageSchema } from "@/lib/schema";
-import { buildPageMetadata, PAGE_REVALIDATE_SECONDS } from "@/lib/seo";
-
-export const revalidate = PAGE_REVALIDATE_SECONDS;
+import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
   title: "Request a Bulk Sugar Quote",

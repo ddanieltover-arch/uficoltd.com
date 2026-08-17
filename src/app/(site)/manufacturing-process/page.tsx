@@ -2,9 +2,7 @@ import { InfoPageContent } from "@/components/sections/InfoPageContent";
 import { manufacturingFaqs } from "@/config/page-faqs";
 import { getPage } from "@/lib/content";
 import { productImages } from "@/lib/site-images";
-import { buildPageMetadata, PAGE_REVALIDATE_SECONDS, truncateMeta } from "@/lib/seo";
-
-export const revalidate = PAGE_REVALIDATE_SECONDS;
+import { buildPageMetadata, truncateMeta } from "@/lib/seo";
 
 export async function generateMetadata() {
   const page = await getPage("manufacturing-process");

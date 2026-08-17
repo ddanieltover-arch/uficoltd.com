@@ -1,9 +1,7 @@
 import { HomePage } from "@/components/sections/HomePage";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { faqPageSchema } from "@/lib/schema";
-import { buildPageMetadata, PAGE_REVALIDATE_SECONDS } from "@/lib/seo";
-
-export const revalidate = PAGE_REVALIDATE_SECONDS;
+import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
   title: "Wholesale Refined Sugar from Thailand",

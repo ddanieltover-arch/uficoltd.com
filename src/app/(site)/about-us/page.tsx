@@ -2,9 +2,7 @@ import { AboutPageContent } from "@/components/sections/AboutPageContent";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { getPage } from "@/lib/content";
 import { aboutPageSchema } from "@/lib/schema";
-import { buildPageMetadata, PAGE_REVALIDATE_SECONDS, truncateMeta } from "@/lib/seo";
-
-export const revalidate = PAGE_REVALIDATE_SECONDS;
+import { buildPageMetadata, truncateMeta } from "@/lib/seo";
 
 export async function generateMetadata() {
   const page = await getPage("about-us");

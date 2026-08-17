@@ -6,12 +6,10 @@ import { AnswerCapsule } from "@/components/seo/AnswerCapsule";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { RelatedLinks } from "@/components/seo/RelatedLinks";
 import { getCategories, getProductsByCategory } from "@/lib/content";
-import { buildPageMetadata, PAGE_REVALIDATE_SECONDS } from "@/lib/seo";
+import { buildPageMetadata } from "@/lib/seo";
 import Link from "next/link";
 
 type Props = { params: Promise<{ slug: string }> };
-
-export const revalidate = PAGE_REVALIDATE_SECONDS;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;

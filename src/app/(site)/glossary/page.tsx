@@ -4,9 +4,7 @@ import { AnswerCapsule } from "@/components/seo/AnswerCapsule";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { RelatedLinks } from "@/components/seo/RelatedLinks";
 import { getGlossary } from "@/lib/content";
-import { buildPageMetadata, PAGE_REVALIDATE_SECONDS } from "@/lib/seo";
-
-export const revalidate = PAGE_REVALIDATE_SECONDS;
+import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
   title: "Sugar and ICUMSA Glossary",

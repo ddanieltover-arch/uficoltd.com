@@ -1,8 +1,6 @@
 import { ShopPageContent } from "@/components/sections/ShopPageContent";
 import { getCategories, getProducts } from "@/lib/content";
-import { buildPageMetadata, PAGE_REVALIDATE_SECONDS } from "@/lib/seo";
-
-export const revalidate = PAGE_REVALIDATE_SECONDS;
+import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
   title: "Bulk Refined White Sugar",

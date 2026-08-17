@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { site } from "@/lib/content";
 
-export const PAGE_REVALIDATE_SECONDS = 3600;
-
 export const DEFAULT_OG_IMAGE = {
   url: "/images/site/og-image.png",
   width: 1200,

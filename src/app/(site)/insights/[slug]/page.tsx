@@ -8,11 +8,9 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { RelatedLinks } from "@/components/seo/RelatedLinks";
 import { getArticleBySlug } from "@/lib/content";
 import { articleSchema } from "@/lib/schema";
-import { buildPageMetadata, PAGE_REVALIDATE_SECONDS, truncateMeta } from "@/lib/seo";
+import { buildPageMetadata, truncateMeta } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
-
-export const revalidate = PAGE_REVALIDATE_SECONDS;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
