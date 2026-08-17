@@ -23,6 +23,15 @@ type JsonPage = {
   paragraphs: string[];
 };
 
+type JsonInsight = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  paragraphs: string[];
+  metaTitle?: string;
+  metaDescription?: string;
+};
+
 async function main() {
   const adminEmail = process.env.ADMIN_EMAIL ?? "sales@uficoltd.com";
   const adminPassword = process.env.ADMIN_PASSWORD ?? "ChangeMeNow!UFI";
@@ -49,6 +58,9 @@ async function main() {
   const pages = JSON.parse(
     readFileSync(join(root, "content/pages.json"), "utf8"),
   ) as Record<string, JsonPage>;
+  const insights = JSON.parse(
+    readFileSync(join(root, "content/insights.json"), "utf8"),
+  ) as JsonInsight[];
 
   const categoryIds = new Map<string, string>();
 
@@ -122,6 +134,11 @@ async function main() {
     }
   }
 
+  await prisma.product.updateMany({
+    where: { slug: "icumsa-100-150-sugar-2" },
+    data: { status: PublishStatus.ARCHIVED },
+  });
+
   for (const page of Object.values(pages)) {
     await prisma.sitePage.upsert({
       where: { slug: page.slug },
@@ -139,7 +156,35 @@ async function main() {
     });
   }
 
-  console.log(`Seeded admin ${adminEmail}, ${categories.length} categories, ${products.length} products, ${Object.keys(pages).length} pages.`);
+  for (const insight of insights) {
+    const body = insight.paragraphs.join("\n\n");
+    await prisma.article.upsert({
+      where: { slug: insight.slug },
+      update: {
+        title: insight.title,
+        excerpt: insight.excerpt,
+        body,
+        status: PublishStatus.PUBLISHED,
+        publishedAt: new Date(),
+        metaTitle: insight.metaTitle ?? null,
+        metaDescription: insight.metaDescription ?? null,
+      },
+      create: {
+        slug: insight.slug,
+        title: insight.title,
+        excerpt: insight.excerpt,
+        body,
+        status: PublishStatus.PUBLISHED,
+        publishedAt: new Date(),
+        metaTitle: insight.metaTitle ?? null,
+        metaDescription: insight.metaDescription ?? null,
+      },
+    });
+  }
+
+  console.log(
+    `Seeded admin ${adminEmail}, ${categories.length} categories, ${products.length} products, ${Object.keys(pages).length} pages, ${insights.length} insights.`,
+  );
 }
 
 main()

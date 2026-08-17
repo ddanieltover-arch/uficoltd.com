@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { href: "/admin/inquiries", label: "Inquiries" },
   { href: "/admin/products", label: "Products" },
   { href: "/admin/pages", label: "Pages" },
+  { href: "/admin/insights", label: "Insights" },
 ] as const;
 
 export function AdminNav({ current }: { current: string }) {

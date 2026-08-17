@@ -1,8 +1,19 @@
 import categoriesJson from "../../content/categories.json";
+import faqJson from "../../content/faq.json";
+import glossaryJson from "../../content/glossary.json";
+import insightsJson from "../../content/insights.json";
 import pagesJson from "../../content/pages.json";
 import productsJson from "../../content/products.json";
 import siteData from "../../content/site.json";
-import type { Category, PageContent, Product, SiteConfig } from "@/types";
+import type {
+  Article,
+  Category,
+  FaqItem,
+  GlossaryTerm,
+  PageContent,
+  Product,
+  SiteConfig,
+} from "@/types";
 import {
   getPublishedProductBySlug,
   getPublishedProductsByCategory,
@@ -11,12 +22,43 @@ import {
   searchPublishedProducts,
 } from "@/services/productService";
 import { getPublishedPageContent } from "@/services/sitePageService";
+import {
+  getPublishedArticleBySlug,
+  listPublishedArticles,
+} from "@/services/articleService";
 
 export const site = siteData as SiteConfig;
 
 const fallbackProducts = productsJson as Product[];
 const fallbackCategories = categoriesJson as Category[];
 const fallbackPages = pagesJson as Record<string, PageContent>;
+const fallbackFaqs = faqJson as FaqItem[];
+const fallbackGlossary = glossaryJson as GlossaryTerm[];
+
+type InsightJson = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  paragraphs: string[];
+  metaTitle?: string;
+  metaDescription?: string;
+};
+
+function articleFromJson(item: InsightJson): Article {
+  return {
+    id: item.slug,
+    slug: item.slug,
+    title: item.title,
+    excerpt: item.excerpt,
+    body: item.paragraphs.join("\n\n"),
+    paragraphs: item.paragraphs,
+    publishedAt: "2026-08-17T00:00:00.000Z",
+    metaTitle: item.metaTitle,
+    metaDescription: item.metaDescription,
+  };
+}
+
+const fallbackArticles = (insightsJson as InsightJson[]).map(articleFromJson);
 
 /** @deprecated Prefer getProducts() — sync export kept only for static fallbacks during migration. */
 export const products: Product[] = fallbackProducts;
@@ -85,4 +127,23 @@ export async function getPage(slug: string): Promise<PageContent> {
     const page = await getPublishedPageContent(slug);
     return page ?? fallback;
   }, fallback);
+}
+
+export function getFaqs(): FaqItem[] {
+  return fallbackFaqs;
+}
+
+export function getGlossary(): GlossaryTerm[] {
+  return fallbackGlossary;
+}
+
+export async function getArticles(): Promise<Article[]> {
+  return fromDbOrFallback(() => listPublishedArticles(), fallbackArticles);
+}
+
+export async function getArticleBySlug(slug: string): Promise<Article | undefined> {
+  return fromDbOrFallback(
+    () => getPublishedArticleBySlug(slug),
+    fallbackArticles.find((a) => a.slug === slug),
+  );
 }

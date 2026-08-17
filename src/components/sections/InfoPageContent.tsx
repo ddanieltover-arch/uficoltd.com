@@ -1,14 +1,23 @@
 import Image from "next/image";
+import Link from "next/link";
 import { CompanySubNav } from "@/components/layout/CompanySubNav";
+import { AnswerCapsule } from "@/components/seo/AnswerCapsule";
+import { RelatedLinks } from "@/components/seo/RelatedLinks";
+import type { RelatedPageKey } from "@/config/related-links";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { ButtonLink } from "@/components/ui/Button";
 import { parsePageSections } from "@/lib/format-page-content";
-import type { PageContent } from "@/types";
+import { faqPageSchema } from "@/lib/schema";
+import type { FaqItem, PageContent } from "@/types";
 
 type InfoPageContentProps = {
   page: PageContent;
   eyebrow: string;
   heroImage?: string;
   heroImageAlt?: string;
+  answer?: string;
+  faqs?: FaqItem[];
+  relatedPage?: RelatedPageKey;
 };
 
 export function InfoPageContent({
@@ -16,6 +25,9 @@ export function InfoPageContent({
   eyebrow,
   heroImage,
   heroImageAlt = "",
+  answer,
+  faqs,
+  relatedPage,
 }: InfoPageContentProps) {
   const { intro, sections } = parsePageSections(page.paragraphs);
 
@@ -36,6 +48,7 @@ export function InfoPageContent({
               <h1 className="heading-accent mb-5 text-4xl font-bold leading-tight text-slate-900 md:text-5xl">
                 {page.title}
               </h1>
+              {answer ? <AnswerCapsule>{answer}</AnswerCapsule> : null}
               {intro && (
                 <p className="max-w-xl text-lg leading-relaxed text-slate-600">{intro}</p>
               )}
@@ -112,6 +125,32 @@ export function InfoPageContent({
               </ButtonLink>
             </div>
           </div>
+
+          {faqs && faqs.length > 0 ? (
+            <div id="faq" className="mt-12">
+              <JsonLd data={faqPageSchema(faqs)} />
+              <h2 className="mb-6 text-2xl font-bold text-slate-900">FAQs about this process</h2>
+              <dl className="space-y-4">
+                {faqs.map((faq) => (
+                  <div key={faq.question} className="rounded-2xl border border-slate-200 bg-white p-5">
+                    <dt className="font-semibold text-slate-900">{faq.question}</dt>
+                    <dd className="mt-2 text-sm leading-relaxed text-slate-600">{faq.answer}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="mt-4 text-sm text-slate-600">
+                More questions:{" "}
+                <Link href="/faq" className="font-medium text-brand-green hover:underline">
+                  sugar export FAQ
+                </Link>
+                .
+              </p>
+            </div>
+          ) : null}
+
+          {relatedPage ? (
+            <RelatedLinks page={relatedPage} currentPath={`/${page.slug}`} />
+          ) : null}
         </div>
       </section>
     </>

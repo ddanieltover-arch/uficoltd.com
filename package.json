@@ -10,7 +10,8 @@
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
-    "db:setup": "prisma generate && prisma db push && tsx prisma/seed.ts"
+    "db:setup": "prisma generate && prisma db push && tsx prisma/seed.ts",
+    "seo:audit": "node scripts/seo-audit.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",

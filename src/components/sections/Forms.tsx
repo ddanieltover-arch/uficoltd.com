@@ -11,6 +11,7 @@ import {
 } from "@/lib/validations/contact";
 import { submitContactForm, submitEnquiryForm } from "@/actions/contact";
 import { SubmitButton } from "@/components/ui/Button";
+import { trackGenerateLead } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 export function ContactForm({
@@ -37,6 +38,7 @@ export function ContactForm({
 
     if ("success" in result && result.success) {
       setFeedback({ type: "success", message: result.message });
+      trackGenerateLead({ lead_type: "contact" });
       reset();
       return;
     }
@@ -124,6 +126,10 @@ export function EnquiryForm({
 
     if ("success" in result && result.success) {
       setFeedback({ type: "success", message: result.message });
+      trackGenerateLead({
+        lead_type: "product_enquiry",
+        product_slug: productSlug ?? "",
+      });
       reset({ productSlug, subject: productTitle ? `Enquiry: ${productTitle}` : "" });
       return;
     }

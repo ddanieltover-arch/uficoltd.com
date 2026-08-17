@@ -18,8 +18,11 @@ export async function updateSitePageAction(formData: FormData) {
     title,
     body,
     status: STATUSES.includes(status) ? status : "DRAFT",
+    metaTitle: String(formData.get("metaTitle") ?? "").trim() || null,
+    metaDescription: String(formData.get("metaDescription") ?? "").trim() || null,
   });
   revalidatePath("/admin");
   revalidatePath("/admin/pages");
   revalidatePath(`/${slug}`);
+  revalidatePath("/sitemap.xml");
 }

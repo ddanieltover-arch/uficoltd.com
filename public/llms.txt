@@ -1,0 +1,24 @@
+# United Farmer and Industry Co LTD
+> Thailand-origin wholesale refined sugar exporter (UFI Co., LTD).
+
+United Farmer and Industry Co LTD is a B2B sugar exporter in Khonkaen, Thailand, helping importers and food manufacturers source ICUMSA-graded refined cane sugar by specification (grade, packing, volume, Incoterms).
+
+## Key Pages
+- /: Homepage — wholesale refined sugar from Thailand
+- /shop: Bulk catalogue (ICUMSA, white refined, Thai, common sugars)
+- /product/: Product grade pages with RFQ form
+- /about-us: Company, NAP, export partner since 2008
+- /contact-us: Sales quote and contact
+- /manufacturing-process: How cane becomes export sugar
+- /purchasing-procedures: How to buy and which documents are used
+- /quality-standard: How quality is specified
+- /faq: Conversational export questions
+- /glossary: ICUMSA and contract term definitions
+- /insights: Guides for importers and manufacturers
+
+## Primary Topics
+- Wholesale refined sugar from Thailand
+- ICUMSA 45 and ICUMSA 100-150
+- Sugar export documents and Incoterms (FOB, CIF)
+- Packaging and MOQ for container shipments
+- Quality specification for food manufacturers

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { site } from "@/lib/content";
+import { DEFAULT_OG_IMAGE } from "@/lib/seo";
 import "./globals.css";
 
 const inter = Inter({
@@ -11,10 +13,13 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} – Premium Wholesale Refined Sugar`,
+    default: `${site.name} – Wholesale Refined Sugar from Thailand`,
     template: `%s – ${site.name}`,
   },
   description: site.tagline,
+  verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+    : undefined,
   icons: {
     icon: [
       { url: "/images/site/favicon.ico" },
@@ -29,20 +34,14 @@ export const metadata: Metadata = {
     url: site.url,
     title: site.name,
     description: site.tagline,
-    images: [
-      {
-        url: "/images/site/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: site.name,
-      },
-    ],
+    images: [{ ...DEFAULT_OG_IMAGE }],
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
     title: site.name,
     description: site.tagline,
-    images: ["/images/site/og-image.png"],
+    images: [DEFAULT_OG_IMAGE.url],
   },
   robots: { index: true, follow: true },
 };
@@ -52,9 +51,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+
   return (
     <html lang="en">
       <body className={`${inter.variable} min-h-screen antialiased`}>
+        {gaId ? <GoogleAnalytics measurementId={gaId} /> : null}
         {children}
       </body>
     </html>

@@ -1,0 +1,18 @@
+From Page,To Page,Anchor Text,Type,Priority
+/,/shop,bulk refined white sugar,internal,High
+/,/product/icumsa-45-sugar,ICUMSA 45 sugar,internal,High
+/,/about-us,Thai sugar exporter,internal,High
+/,/insights/what-is-icumsa-sugar-grade,what is ICUMSA,internal,High
+/,/faq,sugar export FAQ,internal,High
+/,/quality-standard,refined sugar quality standard,internal,High
+/,/contact-us,bulk sugar quote,internal,High
+/,https://www.icumsa.org/,ICUMSA sugar analysis methods,outbound,High
+/,https://www.ocsb.go.th/,Office of the Cane and Sugar Board (Thailand),outbound,High
+/shop,/,wholesale refined sugar from Thailand,internal,High
+/about-us,/,Thai wholesale refined sugar,internal,High
+/contact-us,/,refined sugar export from Thailand,internal,High
+/faq,/,wholesale refined sugar from Thailand,internal,High
+/glossary,/,refined sugar export from Thailand,internal,High
+/insights,/,wholesale refined sugar Thailand,internal,High
+/product/[slug],/,wholesale refined sugar from Thailand,internal,High
+See src/config/related-links.ts,for the full 5-7 internal + 2 outbound map per page template,keyword anchors,internal,High

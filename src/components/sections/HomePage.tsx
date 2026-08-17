@@ -3,6 +3,7 @@ import { Shield, Layers, Truck } from "lucide-react";
 import { features, skills, testimonials } from "@/config/site";
 import { getCategories, getProducts, site } from "@/lib/content";
 import { ContactForm } from "@/components/sections/Forms";
+import { RelatedLinks } from "@/components/seo/RelatedLinks";
 import { CategoryCard, ProductGrid } from "@/components/sections/ProductCard";
 import { SectionHeading } from "@/components/layout/SiteChrome";
 import { ButtonLink } from "@/components/ui/Button";
@@ -43,12 +44,18 @@ export async function HomePage() {
               {site.shortName}
             </p>
             <h1 className="mb-5 text-4xl font-bold uppercase leading-tight md:text-6xl">
-              Refined Sugars
+              Wholesale refined sugar
               <span className="block bg-gradient-to-r from-brand-green-light to-emerald-300 bg-clip-text text-transparent">
-                Pure, Premium
+                from Thailand
               </span>
             </h1>
-            <p className="mb-8 max-w-2xl text-lg text-white/90 md:text-xl">{site.tagline}</p>
+            <p className="mb-4 max-w-2xl text-lg text-white/90 md:text-xl">{site.tagline}</p>
+            <p className="mb-8 max-w-2xl text-base leading-relaxed text-white/80">
+              <strong className="text-white">Quick answer: </strong>
+              UFI Co., LTD exports wholesale refined cane sugar from Khonkaen, Thailand —
+              ICUMSA grades such as 45 and 100-150 — quoted for importers and manufacturers,
+              not sold at retail checkout.
+            </p>
             <div className="flex flex-wrap gap-4">
               <ButtonLink href="/shop" variant="primary" className="animate-pulse-glow">
                 Explore Products
@@ -115,12 +122,25 @@ export async function HomePage() {
           <FadeIn direction="right" delay={0.1}>
             <p className="mb-2 font-semibold text-brand-green">{site.shortName}</p>
             <h2 className="mb-4 text-3xl font-bold text-slate-900 md:text-4xl">
-              Thai Sugars Premium ICUMSA
+              What is wholesale refined sugar from Thailand?
             </h2>
             <p className="mb-6 text-slate-600">
-              Unleash the Essence of Taste with our Exclusive Wholesale Refined White Sugar
+              ICUMSA-graded cane sugar packed for export — for importers and food manufacturers.
+              Compare grades in the catalogue, or read how{" "}
+              <a href="/insights/what-is-icumsa-sugar-grade" className="font-medium text-brand-green hover:underline">
+                ICUMSA grades work
+              </a>
+              , our{" "}
+              <a href="/manufacturing-process" className="font-medium text-brand-green hover:underline">
+                manufacturing process
+              </a>
+              , and{" "}
+              <a href="/quality-standard" className="font-medium text-brand-green hover:underline">
+                quality standards
+              </a>
+              .
             </p>
-            <ButtonLink href="/shop">Shop Here!</ButtonLink>
+            <ButtonLink href="/shop">View wholesale products</ButtonLink>
           </FadeIn>
         </div>
       </section>
@@ -251,6 +271,12 @@ export async function HomePage() {
               </div>
             </div>
           </FadeIn>
+        </div>
+      </section>
+
+      <section className="bg-slate-50 py-16">
+        <div className="mx-auto max-w-7xl px-4">
+          <RelatedLinks page="home" currentPath="/" className="rounded-2xl border border-slate-200 bg-white p-6 md:p-8" />
         </div>
       </section>
 

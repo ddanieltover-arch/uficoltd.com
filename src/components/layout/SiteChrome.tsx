@@ -12,6 +12,7 @@ import { siteImages } from "@/lib/site-images";
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
   { label: "Our Products", href: "/shop" },
+  { label: "Insights", href: "/insights" },
   { label: "About Us", href: "/about-us" },
   { label: "Contact Us", href: "/contact-us" },
   { label: "Manufacturing Process", href: "/manufacturing-process" },
@@ -108,6 +109,9 @@ export function Footer() {
           <h3 className="mb-3 font-semibold text-white">Quick Links</h3>
           <ul className="space-y-2 text-sm text-slate-400">
             <li><Link href="/shop" className="hover:text-brand-green-light">Our Products</Link></li>
+            <li><Link href="/insights" className="hover:text-brand-green-light">Insights</Link></li>
+            <li><Link href="/faq" className="hover:text-brand-green-light">FAQ</Link></li>
+            <li><Link href="/glossary" className="hover:text-brand-green-light">Glossary</Link></li>
             <li><Link href="/about-us" className="hover:text-brand-green-light">About Us</Link></li>
             <li><Link href="/contact-us" className="hover:text-brand-green-light">Contact Us</Link></li>
             <li><Link href="/purchasing-procedures" className="hover:text-brand-green-light">Purchasing Procedures</Link></li>

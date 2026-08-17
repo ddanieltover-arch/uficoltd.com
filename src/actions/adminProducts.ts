@@ -71,6 +71,8 @@ export async function updateProductAction(formData: FormData) {
     shortDescription: String(formData.get("shortDescription") ?? ""),
     description: String(formData.get("description") ?? ""),
     originCountry: String(formData.get("originCountry") ?? "") || null,
+    metaTitle: String(formData.get("metaTitle") ?? "").trim() || null,
+    metaDescription: String(formData.get("metaDescription") ?? "").trim() || null,
     status: STATUSES.includes(status) ? status : undefined,
   });
   revalidateProduct(id);

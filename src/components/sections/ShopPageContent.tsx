@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { PageBanner } from "@/components/layout/SiteChrome";
+import { RelatedLinks } from "@/components/seo/RelatedLinks";
 import { CategoryCard, ProductGrid } from "@/components/sections/ProductCard";
 import { categoryImages } from "@/lib/site-images";
 import type { Category, Product } from "@/types";
@@ -35,9 +36,30 @@ export function ShopPageContent({
 
   return (
     <>
-      <PageBanner title="Our Products" />
+      <PageBanner title="Wholesale refined sugar" />
       <section className="py-14">
         <div className="mx-auto max-w-7xl px-4">
+          <p className="mb-4 max-w-3xl text-lg text-slate-700">
+            <strong className="text-slate-900">Quick answer: </strong>
+            This catalogue is bulk refined sugar from Thailand — ICUMSA, white refined, Thai,
+            and common grades — quoted by volume and destination, not sold at a public retail
+            price.
+          </p>
+          <p className="mb-10 max-w-3xl text-slate-600">
+            New to the grades? Read{" "}
+            <a href="/insights/icumsa-45-vs-100-150" className="font-medium text-brand-green hover:underline">
+              ICUMSA 45 vs 100-150
+            </a>
+            , the{" "}
+            <a href="/glossary" className="font-medium text-brand-green hover:underline">
+              glossary
+            </a>
+            , or{" "}
+            <a href="/contact-us" className="font-medium text-brand-green hover:underline">
+              request a quote
+            </a>
+            .
+          </p>
           <div className="mb-10 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:flex md:items-center md:justify-between">
             <p className="text-sm font-medium text-slate-600">
               Showing <span className="font-bold text-brand-green">{filtered.length}</span> of{" "}
@@ -79,6 +101,7 @@ export function ShopPageContent({
           </div>
 
           <ProductGrid products={filtered} animated />
+          <RelatedLinks page="shop" currentPath="/shop" />
         </div>
       </section>
     </>

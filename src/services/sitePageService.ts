@@ -12,7 +12,13 @@ export async function getSitePageBySlug(slug: string) {
 
 export async function updateSitePage(
   slug: string,
-  data: { title?: string; body?: string; status?: PublishStatus },
+  data: {
+    title?: string;
+    body?: string;
+    status?: PublishStatus;
+    metaTitle?: string | null;
+    metaDescription?: string | null;
+  },
 ) {
   return prisma.sitePage.upsert({
     where: { slug },
@@ -22,6 +28,8 @@ export async function updateSitePage(
       title: data.title ?? slug,
       body: data.body ?? "",
       status: data.status ?? "DRAFT",
+      metaTitle: data.metaTitle,
+      metaDescription: data.metaDescription,
     },
   });
 }
@@ -40,5 +48,7 @@ export async function getPublishedPageContent(
       .split(/\n\n+/)
       .map((p) => p.trim())
       .filter(Boolean),
+    metaTitle: page.metaTitle,
+    metaDescription: page.metaDescription,
   };
 }

@@ -1,0 +1,62 @@
+[
+  {
+    "term": "ICUMSA",
+    "slug": "icumsa",
+    "definition": "The International Commission for Uniform Methods of Sugar Analysis. In trade, “ICUMSA” usually refers to a colour grade of sugar: a lower number indicates a whiter, more highly refined crystal."
+  },
+  {
+    "term": "ICUMSA 45",
+    "slug": "icumsa-45",
+    "definition": "A highly refined white sugar grade specified by many food and beverage manufacturers. It is among the whitest commercial cane sugars commonly offered for export."
+  },
+  {
+    "term": "ICUMSA 100-150",
+    "slug": "icumsa-100-150",
+    "definition": "A refined sugar colour range above ICUMSA 45. It is still a refined product, but the crystal is less brilliant white than ICUMSA 45."
+  },
+  {
+    "term": "Refined white sugar",
+    "slug": "refined-white-sugar",
+    "definition": "Cane sugar that has been processed after raw sugar production to remove remaining colour and impurities, yielding a white crystal suitable for food manufacturing and table use."
+  },
+  {
+    "term": "Raw sugar",
+    "slug": "raw-sugar",
+    "definition": "Sugar after milling and crystallisation but before full refining. It is typically golden or brown and is an intermediate for refineries rather than a finished white food-grade crystal."
+  },
+  {
+    "term": "Polarity",
+    "slug": "polarity",
+    "definition": "A laboratory measure of sucrose content, often expressed in degrees. Higher polarity indicates a higher sucrose percentage in the sample."
+  },
+  {
+    "term": "FOB",
+    "slug": "fob",
+    "definition": "Free On Board — an Incoterm where the seller delivers the goods on board the vessel at the named port of shipment. Freight and insurance after that point are typically the buyer’s responsibility."
+  },
+  {
+    "term": "CIF",
+    "slug": "cif",
+    "definition": "Cost, Insurance and Freight — an Incoterm where the seller arranges carriage and insurance to the named destination port, with risk transferring under the CIF rules at shipment."
+  },
+  {
+    "term": "MOQ",
+    "slug": "moq",
+    "definition": "Minimum order quantity. For export sugar this is usually expressed in metric tons or container loads, agreed in the contract rather than as a website list price."
+  },
+  {
+    "term": "Incoterms",
+    "slug": "incoterms",
+    "definition": "Standard trade terms published by the International Chamber of Commerce that allocate cost and risk between buyer and seller (for example FOB, CIF, EXW, CNF)."
+  },
+  {
+    "term": "Certificate of origin",
+    "slug": "certificate-of-origin",
+    "definition": "A trade document stating the country where the goods were produced. Buyers often need it for customs clearance and preferential tariff claims."
+  },
+  {
+    "term": "Jumbo bag / FIBC",
+    "slug": "jumbo-bag",
+    "definition": "A flexible intermediate bulk container, typically 500–1,250 kg, used for industrial sugar deliveries when 50 kg bags are not specified."
+  }
+]

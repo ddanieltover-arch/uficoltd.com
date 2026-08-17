@@ -7,6 +7,9 @@ function toPublicProduct(row: {
   name: string;
   shortDescription: string;
   description: string;
+  metaTitle: string | null;
+  metaDescription: string | null;
+  updatedAt: Date;
   category: { slug: string; name: string };
   images: { url: string; isPrimary: boolean }[];
 }): Product {
@@ -21,6 +24,9 @@ function toPublicProduct(row: {
     category: row.category.slug,
     categoryName: row.category.name,
     image: primary,
+    metaTitle: row.metaTitle,
+    metaDescription: row.metaDescription,
+    updatedAt: row.updatedAt,
   };
 }
 

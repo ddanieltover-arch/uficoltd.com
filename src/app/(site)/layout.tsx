@@ -1,5 +1,7 @@
 import { Footer, Header } from "@/components/layout/SiteChrome";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { PageTransition } from "@/components/shared/PageTransition";
+import { organizationSchema, websiteSchema } from "@/lib/schema";
 
 export default function SiteLayout({
   children,
@@ -8,6 +10,8 @@ export default function SiteLayout({
 }>) {
   return (
     <>
+      <JsonLd data={organizationSchema()} />
+      <JsonLd data={websiteSchema()} />
       <Header />
       <main>
         <PageTransition>{children}</PageTransition>

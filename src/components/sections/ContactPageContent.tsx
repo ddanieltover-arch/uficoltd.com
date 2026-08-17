@@ -12,6 +12,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { ContactForm } from "@/components/sections/Forms";
+import { RelatedLinks } from "@/components/seo/RelatedLinks";
 import { FadeIn, Stagger, StaggerItem } from "@/components/shared/motion";
 import { ButtonLink } from "@/components/ui/Button";
 import { site } from "@/lib/content";
@@ -80,12 +81,17 @@ export function ContactPageContent() {
                   Contact UFI
                 </p>
                 <h1 className="heading-accent mb-5 text-4xl font-bold leading-tight text-slate-900 md:text-5xl">
-                  Let&apos;s talk sugar supply
+                  Request a bulk sugar quote
                 </h1>
+                <p className="mb-4 max-w-lg text-base leading-relaxed text-slate-800">
+                  <strong>Quick answer: </strong>
+                  Email or call UFI sales with ICUMSA grade, volume, destination port, packing,
+                  and Incoterm. We reply within 1–2 business days — there is no website checkout.
+                </p>
                 <p className="mb-8 max-w-lg text-lg leading-relaxed text-slate-600">
                   Whether you need ICUMSA 45, Thai refined sugar, or bulk wholesale
-                  quantities — our sales team is ready to help with quotes, logistics,
-                  and long-term supply partnerships.
+                  quantities — our sales team helps with quotes, logistics, and long-term
+                  supply partnerships.
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <ButtonLink href="/shop" className="inline-flex items-center gap-2">
@@ -290,6 +296,9 @@ export function ContactPageContent() {
               </div>
             </div>
           </FadeIn>
+          <div className="mt-10">
+            <RelatedLinks page="contact" currentPath="/contact-us" />
+          </div>
         </div>
       </section>
     </>

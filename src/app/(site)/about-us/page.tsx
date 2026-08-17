@@ -1,15 +1,29 @@
-import type { Metadata } from "next";
 import { AboutPageContent } from "@/components/sections/AboutPageContent";
-import { getPage, site } from "@/lib/content";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { getPage } from "@/lib/content";
+import { aboutPageSchema } from "@/lib/schema";
+import { buildPageMetadata, PAGE_REVALIDATE_SECONDS, truncateMeta } from "@/lib/seo";
 
-export const dynamic = "force-dynamic";
+export const revalidate = PAGE_REVALIDATE_SECONDS;
 
-export const metadata: Metadata = {
-  title: "About Us",
-  description: `Learn about ${site.name} — a premium wholesale refined sugar supplier based in Thailand.`,
-};
+export async function generateMetadata() {
+  const page = await getPage("about-us");
+  return buildPageMetadata({
+    title: page.metaTitle ?? "Thai Sugar Exporter in Khonkaen",
+    description: truncateMeta(
+      page.metaDescription ??
+        "United Farmer and Industry Co LTD exports wholesale refined sugar from Khonkaen, Thailand. Trusted export partner since 2008 — ICUMSA grades and bulk RFQ supply.",
+    ),
+    path: "/about-us",
+  });
+}
 
 export default async function AboutPage() {
   const page = await getPage("about-us");
-  return <AboutPageContent page={page} />;
+  return (
+    <>
+      <JsonLd data={aboutPageSchema()} />
+      <AboutPageContent page={page} />
+    </>
+  );
 }

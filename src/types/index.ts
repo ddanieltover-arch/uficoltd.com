@@ -18,6 +18,9 @@ export interface Product {
   category: string;
   categoryName: string;
   image: string;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  updatedAt?: string | Date;
 }
 
 export interface Category {
@@ -30,6 +33,32 @@ export interface PageContent {
   title: string;
   slug: string;
   paragraphs: string[];
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+}
+
+export interface Article {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  body: string;
+  paragraphs: string[];
+  publishedAt?: string | Date | null;
+  updatedAt?: string | Date;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+}
+
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+export interface GlossaryTerm {
+  term: string;
+  slug: string;
+  definition: string;
 }
 
 export interface Testimonial {

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Award, Globe2, Leaf, Users } from "lucide-react";
 import { FadeIn, Stagger, StaggerItem } from "@/components/shared/motion";
+import { RelatedLinks } from "@/components/seo/RelatedLinks";
 import { ButtonLink } from "@/components/ui/Button";
 import { site } from "@/lib/content";
 import { aboutGallery, marketingImages, siteImages } from "@/lib/site-images";
@@ -48,11 +49,17 @@ export function AboutPageContent({ page }: { page: PageContent }) {
                   {site.shortName}
                 </p>
                 <h1 className="heading-accent mb-5 text-4xl font-bold leading-tight text-slate-900 md:text-5xl">
-                  {page.title}
+                  Thai sugar exporter in Khonkaen
                 </h1>
+                <p className="mb-4 max-w-lg text-base leading-relaxed text-slate-800">
+                  <strong>Quick answer: </strong>
+                  United Farmer and Industry Co LTD (UFI) exports wholesale refined sugar from
+                  Khonkaen, Thailand — an export partner since 2008 for importers and
+                  manufacturers.
+                </p>
                 <p className="mb-8 max-w-lg text-lg leading-relaxed text-slate-600">
-                  {site.tagline}. From Khonkaen, Thailand, we connect growers, mills, and
-                  international buyers with premium refined sugar products.
+                  {site.tagline}. From Nongrua, Khonkaen, we connect mill production with
+                  international buyers on named ICUMSA grades.
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <ButtonLink href="/shop">Our products</ButtonLink>
@@ -164,6 +171,12 @@ export function AboutPageContent({ page }: { page: PageContent }) {
               </StaggerItem>
             ))}
           </Stagger>
+        </div>
+      </section>
+
+      <section className="py-12">
+        <div className="mx-auto max-w-7xl px-4">
+          <RelatedLinks page="about" currentPath="/about-us" />
         </div>
       </section>
 

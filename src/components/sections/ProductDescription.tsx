@@ -71,7 +71,15 @@ export function ProductDescription({ product, paragraphs }: ProductDescriptionPr
             <div>
               <p className="font-semibold">Need pricing or bulk quantities?</p>
               <p className="mt-1 text-sm text-white/80">
-                Request a quote and our sales team will respond within 1–2 business days.
+                Request a quote and our sales team will respond within 1–2 business days. See{" "}
+                <a href="/purchasing-procedures" className="underline">
+                  purchasing procedures
+                </a>{" "}
+                and{" "}
+                <a href="/insights/what-is-icumsa-sugar-grade" className="underline">
+                  ICUMSA grades
+                </a>
+                .
               </p>
             </div>
             <ButtonLink href="#quote" className="!bg-white !text-brand-navy hover:!bg-slate-100">

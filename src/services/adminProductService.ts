@@ -78,6 +78,8 @@ export async function updateProduct(
     shortDescription?: string;
     description?: string;
     originCountry?: string | null;
+    metaTitle?: string | null;
+    metaDescription?: string | null;
     status?: PublishStatus;
   },
 ) {

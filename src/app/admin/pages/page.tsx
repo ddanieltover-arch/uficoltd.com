@@ -62,6 +62,23 @@ export default async function AdminPagesPage() {
                     className={fieldClass}
                   />
                 </label>
+                <label className="block text-sm">
+                  <span className="mb-1 block text-brand-muted">Meta title (optional)</span>
+                  <input
+                    name="metaTitle"
+                    defaultValue={page.metaTitle ?? ""}
+                    className={fieldClass}
+                  />
+                </label>
+                <label className="block text-sm">
+                  <span className="mb-1 block text-brand-muted">Meta description (optional)</span>
+                  <textarea
+                    name="metaDescription"
+                    rows={2}
+                    defaultValue={page.metaDescription ?? ""}
+                    className={fieldClass}
+                  />
+                </label>
                 <button
                   type="submit"
                   className="min-h-11 rounded-[var(--brand-radius-md)] bg-brand-primary px-4 text-sm font-semibold text-white hover:bg-brand-primary-hover"
