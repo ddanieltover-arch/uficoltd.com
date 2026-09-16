@@ -27,20 +27,20 @@ export function readSpamFields(data: unknown): SpamFields {
   return {
     companyWebsite: typeof record.companyWebsite === "string" ? record.companyWebsite.trim() : "",
     startedAt: Number.isFinite(startedAt) ? startedAt : undefined,
-    turnstileToken: typeof record.turnstileToken === "string" ? record.turnstileToken : "",
+    turnstileToken:
+      typeof record["cf-turnstile-response"] === "string"
+        ? record["cf-turnstile-response"]
+          : "",
   };
-}
-
-export function isTurnstileEnabled(): boolean {
-  return Boolean(process.env.TURNSTILE_SECRET_KEY && process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY);
 }
 
 export async function assessFormSpam(input: {
   fields: SpamFields;
   email: string;
   message: string;
+  expectedAction: "contact" | "enquiry";
 }): Promise<SpamDecision> {
-  const { fields, email, message } = input;
+  const { fields, email, message, expectedAction } = input;
 
   if (fields.companyWebsite) {
     return silent("honeypot");
@@ -58,19 +58,15 @@ export async function assessFormSpam(input: {
     };
   }
 
-  if (isTurnstileEnabled()) {
-    const passed = await verifyTurnstile(fields.turnstileToken);
-    if (!passed) {
-      return {
-        action: "reject",
-        error: "Please complete the security check and try again.",
-      };
-    }
-  } else if (process.env.NODE_ENV === "production") {
-    console.error("[spam] Turnstile is not configured. Form checks are only partial.");
+  const ip = await clientIp();
+  const verified = await verifyTurnstile(fields.turnstileToken, expectedAction, ip);
+  if (!verified) {
+    return {
+      action: "reject",
+      error: "Please complete the security check and try again.",
+    };
   }
 
-  const ip = await clientIp();
   if (tooMany(ipHits, `ip:${ip}`)) {
     return {
       action: "reject",
@@ -113,20 +109,62 @@ async function clientIp(): Promise<string> {
   return headerList.get("x-real-ip") ?? "unknown";
 }
 
-async function verifyTurnstile(token: string): Promise<boolean> {
-  const secret = process.env.TURNSTILE_SECRET_KEY;
-  if (!secret || !token) return false;
+function expectedHostnames(): Set<string> {
+  const configured = (process.env.TURNSTILE_HOSTNAMES ?? "")
+    .split(",")
+    .map((hostname) => hostname.trim().toLowerCase())
+    .filter(Boolean);
+
+  if (configured.length > 0) return new Set(configured);
+  if (process.env.NODE_ENV === "production") {
+    return new Set(["uficoltd.com", "www.uficoltd.com"]);
+  }
+  return new Set(["localhost", "127.0.0.1"]);
+}
+
+async function verifyTurnstile(
+  token: string,
+  expectedAction: string,
+  clientIp: string,
+): Promise<boolean> {
+  const secret = process.env.TURNSTILE_SECRET;
+  const hostnames = expectedHostnames();
+  if (
+    !secret ||
+    !expectedAction ||
+    token.length === 0 ||
+    token.length > 2048 ||
+    hostnames.size === 0
+  ) {
+    return false;
+  }
+
+  const body = new URLSearchParams({ secret, response: token });
+  if (clientIp && clientIp !== "unknown") body.set("remoteip", clientIp);
 
   try {
     const response = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ secret, response: token }),
+      signal: AbortSignal.timeout(10_000),
+      body,
     });
-    const result = (await response.json()) as { success?: boolean };
-    return result.success === true;
+    if (!response.ok) return false;
+
+    const result = (await response.json()) as {
+      success?: boolean;
+      action?: string;
+      hostname?: string;
+    };
+
+    return Boolean(
+      result.success === true &&
+        result.action === expectedAction &&
+        result.hostname &&
+        hostnames.has(result.hostname.toLowerCase()),
+    );
   } catch (error) {
-    console.error("[spam] Turnstile verification failed", error);
+    console.error("[spam] Turnstile siteverify failed", error);
     return false;
   }
 }

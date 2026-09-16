@@ -1,7 +1,10 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { TurnstileWidget } from "@/components/forms/TurnstileWidget";
+import {
+  TurnstileWidget,
+  type TurnstileWidgetHandle,
+} from "@/components/forms/TurnstileWidget";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -28,6 +31,7 @@ export function ContactForm({
   const [turnstileToken, setTurnstileToken] = useState("");
   const startedAt = useRef(Date.now());
   const honeypotRef = useRef<HTMLInputElement>(null);
+  const turnstileRef = useRef<TurnstileWidgetHandle>(null);
   const {
     register,
     handleSubmit,
@@ -38,7 +42,7 @@ export function ContactForm({
 
   const onSubmit = async (data: ContactFormData) => {
     setFeedback(null);
-    if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !turnstileToken) {
+    if (!turnstileToken) {
       setFeedback({
         type: "error",
         message: "Please complete the security check and try again.",
@@ -50,8 +54,9 @@ export function ContactForm({
       ...data,
       companyWebsite: honeypotRef.current?.value ?? "",
       startedAt: startedAt.current,
-      turnstileToken,
+      "cf-turnstile-response": turnstileToken,
     });
+    turnstileRef.current?.reset();
 
     if ("success" in result && result.success) {
       setFeedback({ type: "success", message: result.message });
@@ -103,7 +108,12 @@ export function ContactForm({
       <Field label="Your message" error={errors.message?.message} required>
         <textarea rows={5} {...register("message")} className={inputClass} />
       </Field>
-      <SpamFields honeypotRef={honeypotRef} onToken={setTurnstileToken} />
+      <SpamFields
+        action="contact"
+        honeypotRef={honeypotRef}
+        turnstileRef={turnstileRef}
+        onToken={setTurnstileToken}
+      />
       <SubmitButton disabled={isSubmitting} className={layout === "wide" ? "!w-auto" : undefined}>
         {isSubmitting ? "Sending..." : "Send message"}
       </SubmitButton>
@@ -127,6 +137,7 @@ export function EnquiryForm({
   const [turnstileToken, setTurnstileToken] = useState("");
   const startedAt = useRef(Date.now());
   const honeypotRef = useRef<HTMLInputElement>(null);
+  const turnstileRef = useRef<TurnstileWidgetHandle>(null);
   const {
     register,
     handleSubmit,
@@ -143,7 +154,7 @@ export function EnquiryForm({
 
   const onSubmit = async (data: EnquiryFormData) => {
     setFeedback(null);
-    if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !turnstileToken) {
+    if (!turnstileToken) {
       setFeedback({
         type: "error",
         message: "Please complete the security check and try again.",
@@ -155,8 +166,9 @@ export function EnquiryForm({
       ...data,
       companyWebsite: honeypotRef.current?.value ?? "",
       startedAt: startedAt.current,
-      turnstileToken,
+      "cf-turnstile-response": turnstileToken,
     });
+    turnstileRef.current?.reset();
 
     if ("success" in result && result.success) {
       setFeedback({ type: "success", message: result.message });
@@ -204,7 +216,12 @@ export function EnquiryForm({
       <Field label="Enquiry" error={errors.enquiry?.message} required>
         <textarea rows={5} {...register("enquiry")} className={inputClass} placeholder="Tell us about quantities, destination, and timeline..." />
       </Field>
-      <SpamFields honeypotRef={honeypotRef} onToken={setTurnstileToken} />
+      <SpamFields
+        action="enquiry"
+        honeypotRef={honeypotRef}
+        turnstileRef={turnstileRef}
+        onToken={setTurnstileToken}
+      />
       <SubmitButton disabled={isSubmitting} className="!w-auto">
         {isSubmitting ? "Sending..." : "Send enquiry"}
       </SubmitButton>
@@ -214,10 +231,14 @@ export function EnquiryForm({
 }
 
 function SpamFields({
+  action,
   honeypotRef,
+  turnstileRef,
   onToken,
 }: {
+  action: "contact" | "enquiry";
   honeypotRef: React.RefObject<HTMLInputElement | null>;
+  turnstileRef: React.RefObject<TurnstileWidgetHandle | null>;
   onToken: (token: string) => void;
 }) {
   return (
@@ -235,7 +256,7 @@ function SpamFields({
           />
         </label>
       </div>
-      <TurnstileWidget onToken={onToken} />
+      <TurnstileWidget ref={turnstileRef} action={action} onToken={onToken} />
     </>
   );
 }

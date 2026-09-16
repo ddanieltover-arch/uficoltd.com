@@ -79,11 +79,13 @@ async function gateSubmission(
   email: string,
   message: string,
   successMessage: string,
+  expectedAction: "contact" | "enquiry",
 ): Promise<ActionResult | null> {
   const decision = await assessFormSpam({
     fields: readSpamFields(data),
     email,
     message,
+    expectedAction,
   });
 
   if (decision.action === "silent") {
@@ -108,6 +110,7 @@ export async function submitContactForm(data: unknown): Promise<ActionResult> {
     parsed.data.email,
     parsed.data.message,
     CONTACT_SUCCESS,
+    "contact",
   );
   if (blocked) return blocked;
 
@@ -158,6 +161,7 @@ export async function submitEnquiryForm(data: unknown): Promise<ActionResult> {
     parsed.data.email,
     parsed.data.enquiry,
     ENQUIRY_SUCCESS,
+    "enquiry",
   );
   if (blocked) return blocked;
 
