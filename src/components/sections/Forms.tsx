@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { TurnstileWidget } from "@/components/forms/TurnstileWidget";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -24,6 +25,9 @@ export function ContactForm({
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(
     null,
   );
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const startedAt = useRef(Date.now());
+  const honeypotRef = useRef<HTMLInputElement>(null);
   const {
     register,
     handleSubmit,
@@ -34,11 +38,24 @@ export function ContactForm({
 
   const onSubmit = async (data: ContactFormData) => {
     setFeedback(null);
-    const result = await submitContactForm(data);
+    if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !turnstileToken) {
+      setFeedback({
+        type: "error",
+        message: "Please complete the security check and try again.",
+      });
+      return;
+    }
+
+    const result = await submitContactForm({
+      ...data,
+      companyWebsite: honeypotRef.current?.value ?? "",
+      startedAt: startedAt.current,
+      turnstileToken,
+    });
 
     if ("success" in result && result.success) {
       setFeedback({ type: "success", message: result.message });
-      trackGenerateLead({ lead_type: "contact" });
+      if (!result.ignored) trackGenerateLead({ lead_type: "contact" });
       reset();
       return;
     }
@@ -86,6 +103,7 @@ export function ContactForm({
       <Field label="Your message" error={errors.message?.message} required>
         <textarea rows={5} {...register("message")} className={inputClass} />
       </Field>
+      <SpamFields honeypotRef={honeypotRef} onToken={setTurnstileToken} />
       <SubmitButton disabled={isSubmitting} className={layout === "wide" ? "!w-auto" : undefined}>
         {isSubmitting ? "Sending..." : "Send message"}
       </SubmitButton>
@@ -106,6 +124,9 @@ export function EnquiryForm({
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(
     null,
   );
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const startedAt = useRef(Date.now());
+  const honeypotRef = useRef<HTMLInputElement>(null);
   const {
     register,
     handleSubmit,
@@ -122,14 +143,29 @@ export function EnquiryForm({
 
   const onSubmit = async (data: EnquiryFormData) => {
     setFeedback(null);
-    const result = await submitEnquiryForm(data);
+    if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !turnstileToken) {
+      setFeedback({
+        type: "error",
+        message: "Please complete the security check and try again.",
+      });
+      return;
+    }
+
+    const result = await submitEnquiryForm({
+      ...data,
+      companyWebsite: honeypotRef.current?.value ?? "",
+      startedAt: startedAt.current,
+      turnstileToken,
+    });
 
     if ("success" in result && result.success) {
       setFeedback({ type: "success", message: result.message });
-      trackGenerateLead({
-        lead_type: "product_enquiry",
-        product_slug: productSlug ?? "",
-      });
+      if (!result.ignored) {
+        trackGenerateLead({
+          lead_type: "product_enquiry",
+          product_slug: productSlug ?? "",
+        });
+      }
       reset({ productSlug, subject: productTitle ? `Enquiry: ${productTitle}` : "" });
       return;
     }
@@ -168,11 +204,39 @@ export function EnquiryForm({
       <Field label="Enquiry" error={errors.enquiry?.message} required>
         <textarea rows={5} {...register("enquiry")} className={inputClass} placeholder="Tell us about quantities, destination, and timeline..." />
       </Field>
+      <SpamFields honeypotRef={honeypotRef} onToken={setTurnstileToken} />
       <SubmitButton disabled={isSubmitting} className="!w-auto">
         {isSubmitting ? "Sending..." : "Send enquiry"}
       </SubmitButton>
       {feedback && <FeedbackBanner type={feedback.type} message={feedback.message} />}
     </form>
+  );
+}
+
+function SpamFields({
+  honeypotRef,
+  onToken,
+}: {
+  honeypotRef: React.RefObject<HTMLInputElement | null>;
+  onToken: (token: string) => void;
+}) {
+  return (
+    <>
+      <div className="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
+        <label>
+          Company website
+          <input
+            ref={honeypotRef}
+            name="companyWebsite"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            defaultValue=""
+          />
+        </label>
+      </div>
+      <TurnstileWidget onToken={onToken} />
+    </>
   );
 }
 

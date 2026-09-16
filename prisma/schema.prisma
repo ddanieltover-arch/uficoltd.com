@@ -153,6 +153,8 @@ model QuoteRequest {
   version       Int         @default(0)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+
+  @@index([email, createdAt])
 }
 
 model Inquiry {
@@ -168,6 +170,8 @@ model Inquiry {
   status      InquiryStatus @default(NEW)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+
+  @@index([email, createdAt])
 }
 
 model DealerApplication {

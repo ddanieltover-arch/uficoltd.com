@@ -6,11 +6,12 @@ import { contactAdminEmail, contactUserEmail } from "@/lib/email/templates/conta
 import { enquiryAdminEmail, enquiryUserEmail } from "@/lib/email/templates/enquiry";
 import { contactSchema, enquirySchema } from "@/lib/validations/contact";
 import { getProductBySlug } from "@/lib/content";
+import { assessFormSpam, readSpamFields } from "@/lib/spam";
 import { createInquiry } from "@/services/inquiryService";
 import { createQuoteRequest } from "@/services/quoteService";
 
 type ActionResult =
-  | { success: true; message: string }
+  | { success: true; message: string; ignored?: boolean }
   | { error: string; fields?: Record<string, string[]> };
 
 async function sendDualEmails({
@@ -68,11 +69,47 @@ async function sendDualEmails({
   return { ok: true };
 }
 
+const CONTACT_SUCCESS =
+  "Your message has been sent. A confirmation copy has been emailed to you.";
+const ENQUIRY_SUCCESS =
+  "Your enquiry has been sent. A confirmation copy has been emailed to you.";
+
+async function gateSubmission(
+  data: unknown,
+  email: string,
+  message: string,
+  successMessage: string,
+): Promise<ActionResult | null> {
+  const decision = await assessFormSpam({
+    fields: readSpamFields(data),
+    email,
+    message,
+  });
+
+  if (decision.action === "silent") {
+    return { success: true, message: successMessage, ignored: true };
+  }
+
+  if (decision.action === "reject") {
+    return { error: decision.error };
+  }
+
+  return null;
+}
+
 export async function submitContactForm(data: unknown): Promise<ActionResult> {
   const parsed = contactSchema.safeParse(data);
   if (!parsed.success) {
     return { error: "Invalid form data", fields: parsed.error.flatten().fieldErrors };
   }
+
+  const blocked = await gateSubmission(
+    data,
+    parsed.data.email,
+    parsed.data.message,
+    CONTACT_SUCCESS,
+  );
+  if (blocked) return blocked;
 
   try {
     await createInquiry({
@@ -106,7 +143,7 @@ export async function submitContactForm(data: unknown): Promise<ActionResult> {
 
   return {
     success: true,
-    message: "Your message has been sent. A confirmation copy has been emailed to you.",
+    message: CONTACT_SUCCESS,
   };
 }
 
@@ -115,6 +152,14 @@ export async function submitEnquiryForm(data: unknown): Promise<ActionResult> {
   if (!parsed.success) {
     return { error: "Invalid form data", fields: parsed.error.flatten().fieldErrors };
   }
+
+  const blocked = await gateSubmission(
+    data,
+    parsed.data.email,
+    parsed.data.enquiry,
+    ENQUIRY_SUCCESS,
+  );
+  if (blocked) return blocked;
 
   let productId: string | null = null;
   let productLabel = parsed.data.subject ?? null;
@@ -159,6 +204,6 @@ export async function submitEnquiryForm(data: unknown): Promise<ActionResult> {
 
   return {
     success: true,
-    message: "Your enquiry has been sent. A confirmation copy has been emailed to you.",
+    message: ENQUIRY_SUCCESS,
   };
 }

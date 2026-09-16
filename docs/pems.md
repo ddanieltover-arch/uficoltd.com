@@ -47,7 +47,7 @@ Setup: copy `.env.example` → `.env`, then `pnpm db:setup` (or `npm run db:setu
 
 - Layers: `app/admin` → `components/admin` → `actions/admin*` → `services` → Prisma
 - Roles: SUPER_ADMIN, ADMIN, EDITOR, SALES_MANAGER, READ_ONLY
-- Public contact → Inquiry; product enquiry → QuoteRequest; both still send Resend email
+- Public contact → Inquiry; product enquiry → QuoteRequest; both still send Resend email after spam checks (honeypot, fill time, rate limit, Turnstile)
 - Storefront products/categories/pages/insights read from Prisma after seed (JSON fallback when `DATABASE_URL` is unset)
 - Public SEO: `src/lib/seo.ts` metadata helper, JSON-LD in `src/lib/schema.ts`, `/faq` `/glossary` `/insights`, `public/llms.txt`
 - Related links: every public template mounts `RelatedLinks` from `src/config/related-links.ts` (5–7 keyword internal links + 2 authority outbound)
