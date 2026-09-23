@@ -12,6 +12,22 @@ import { buildPageMetadata, truncateMeta } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
 
+function BulkSugarOceanFreightLink() {
+  return (
+    <p className="text-base leading-[1.85] text-slate-600">
+      Buyers who book FOB freight can arrange{" "}
+      <a
+        href="https://nexships.com/services#ocean-freight"
+        className="font-semibold text-brand-green hover:underline"
+        rel="noopener noreferrer"
+      >
+        FCL ocean freight for bulk sugar
+      </a>{" "}
+      to the named destination port.
+    </p>
+  );
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const article = await getArticleBySlug(slug);
@@ -30,6 +46,10 @@ export default async function InsightArticlePage({ params }: Props) {
   if (!article) notFound();
 
   const [first, ...rest] = article.paragraphs;
+  const sugarImportSlug = slug === "how-to-import-refined-sugar-from-thailand";
+  const hasIncotermParagraph = rest.some((paragraph) =>
+    paragraph.startsWith("Agree the Incoterm"),
+  );
 
   return (
     <>
@@ -65,10 +85,16 @@ export default async function InsightArticlePage({ params }: Props) {
           {first ? <AnswerCapsule>{first}</AnswerCapsule> : null}
           <div className="space-y-6">
             {rest.map((paragraph) => (
-              <p key={paragraph.slice(0, 48)} className="text-base leading-[1.85] text-slate-600">
-                {paragraph}
-              </p>
+              <div key={paragraph.slice(0, 48)}>
+                <p className="text-base leading-[1.85] text-slate-600">{paragraph}</p>
+                {sugarImportSlug && paragraph.startsWith("Agree the Incoterm") ? (
+                  <div className="mt-6">
+                    <BulkSugarOceanFreightLink />
+                  </div>
+                ) : null}
+              </div>
             ))}
+            {sugarImportSlug && !hasIncotermParagraph ? <BulkSugarOceanFreightLink /> : null}
           </div>
           <p className="mt-12 rounded-2xl bg-slate-50 p-6 text-slate-700">
             Ready to specify a grade?{" "}
